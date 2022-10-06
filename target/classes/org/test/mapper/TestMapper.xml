@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.test.mapper.TestMapper">
+	<insert id="save">
+		INSERT INTO html(url,content)
+		VALUES (#{url},#{content})
+	</insert>
+	
+	<select id="load" resultType="org.test.model.ContentVO">
+		SELECT * FROM html WHERE url=#{url}
+	</select>
+	
+	<delete id="remove">
+		DELETE FROM html WHERE url=#{tv}
+	</delete>
+	
+	<update id="modify">
+		UPDATE html
+		SET content = #{content}
+		WHERE url = #{url}
+	</update>
+</mapper>

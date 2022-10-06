@@ -1,0 +1,158 @@
+@charset "UTF-8";
+
+#side_btn img {
+    width: 50px;
+    height: 50px;
+    z-index: 10;
+    position: relative;
+}
+
+#side_list {
+    position: fixed;
+    height: 100%;
+    background-color: rgb(235, 252, 197);
+    opacity: 0.8;
+    margin: 0;
+}
+
+#move_div_maker {
+    border: 1px solid rgb(204, 198, 198);
+    width: 150px;
+    height: 120px;
+    border-radius: 15px;
+    position: absolute;
+    left: 75px;
+    top: 100px;
+    display: none;
+}
+
+#move_div_maker img {
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    display: none;
+}
+
+#move_div_maker:hover {
+    background-color: rgb(218, 209, 209);
+    cursor: pointer;
+}
+
+#move_div_maker:hover img {
+    display: flex;
+}
+
+.move_divs {
+    width: 100px;
+    height: 80px;
+    border: 1px solid black;
+    border-radius: 15px;
+    resize: both;
+    overflow: auto;
+    position: absolute;
+    left: 500px;
+    top: 200px;
+    text-align: center;
+    background-color: white;
+}
+
+.move_divs_handler {
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px solid black;
+    text-align: center;
+    font-size: 14px;
+    background-color: gray;
+    cursor: pointer;
+}
+
+.delete_div_btn img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    opacity: 0.5;
+}
+
+.delete_div_btn,
+.insert_div_btn {
+    display: none;
+}
+
+.move_divs:hover .delete_div_btn,
+.move_divs:hover .insert_div_btn {
+    display: block;
+}
+
+.insert_div_btn img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 5px;
+    left: 25px;
+    opacity: 0.5;
+}
+
+.editable {
+    width:auto;
+    height: auto;
+    background-color: rgb(185, 185, 185);
+}
+
+#remove{ 
+    position: absolute;
+    right:50px;
+}
+#save{
+    position: absolute;
+    right:100px;
+}
+#load{
+	position: absolute;
+    right:150px;
+}
+
+#right_move_divs{
+	position: absolute;
+	width: 100px;
+	height: 90px;
+	display: none;
+	background-color: #ebebeb;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+#font_color, #background_color, #z{
+	margin: 0;
+	width: 100px;
+	height: 30px;
+	border: 1px solid black;
+}
+.color{
+	margin: 0;
+	width: 100px;
+	height: 30px;
+	border: 1px solid black;
+}
+
+#right_move_divs div:hover{
+	background-color: #52afe8;
+}
+
+
+.font_color, .background_color{
+	position: absolute;
+	width: 100px;
+	height: 210px;
+	display: none;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+#font_color:hover .font_color, #background_color:hover .background_color{
+	display: flex;
+}
