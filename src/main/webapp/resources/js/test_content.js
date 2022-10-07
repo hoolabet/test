@@ -296,7 +296,7 @@ $("#save").on("click",function(){
 					url:"/test/modify",
 					data:JSON.stringify({
 						url:tv,
-						content:$("html").html()
+						content:$("body").html()
 					}),
 					contentType: "application/json; charset=utf-8",
 					success: function() {
@@ -314,7 +314,7 @@ $("#save").on("click",function(){
 				url:"/test/save",
 				data:JSON.stringify({
 					url:tv,
-					content:$("html").html()
+					content:$("body").html()
 				}),
 				contentType: "application/json; charset=utf-8",
 				success: function(){
@@ -334,9 +334,9 @@ $("#load").on("click", function() {
 function loadFunc(){
 
 
-	
+
 	$.getJSON("/test/load",{url:tv},function(res){
-		$("html").html(res.content);
+		$("body").html(res.content);
 		alert("불러오기 성공");
 
 		$(".move_divs").on("dblclick", function(){
@@ -381,7 +381,7 @@ function loadFunc(){
 							url:"/test/modify",
 							data:JSON.stringify({
 								url:tv,
-								content:$("html").html()
+								content:$("body").html()
 							}),
 							contentType: "application/json; charset=utf-8",
 							success: function() {
@@ -399,7 +399,7 @@ function loadFunc(){
 						url:"/test/save",
 						data:JSON.stringify({
 							url:tv,
-							content:$("html").html()
+							content:$("body").html()
 						}),
 						contentType: "application/json; charset=utf-8",
 						success: function(){
@@ -557,13 +557,13 @@ function loadFunc(){
 				$("#add_home").toggle();
 			}
 		})
-		$("#body_controller").on("click", function(e){
+		$("#body_controller").off("click").on("click", function(e){
 			$("#body_menu").css("top","100px");
 			$("#body_menu").css("left","100px");
 			$("#body_menu").toggle();
 		})
 
-		$("#add_login").on("click", function(){
+		$("#add_login").off("click").on("click", function(){
 			$(this).toggle();
 			const login = `
 				<div id="div_login_login" class="div_login" data-target="login">
@@ -592,7 +592,7 @@ function loadFunc(){
 			dragElement($("#div_login_login")[0]);
 		})
 
-		$("#add_home").on("click", function() {
+		$("#add_home").off("click").on("click", function() {
 			$(this).toggle();
 			const home = `
 				<div id="div_home_home" class="div_home" data-target="home">
@@ -617,6 +617,18 @@ function loadFunc(){
 				$("#home_value_span").toggle();
 			})
 			dragElement($("#div_home_home")[0]);
+		})
+		$("#container_controller").off("click").on("click", function(e){
+			$("#container_menu").css("top","100px");
+			$("#container_menu").css("left","100px");
+			$("#container_menu").toggle();
+		})
+
+		$("#header_controller").off("click").on("click",function(){
+			window.open("/test/header_controller")
+		})
+		$("#footer_controller").off("click").on("click",function(){
+			window.open("/test/footer_controller")
 		})
 	})
 	.fail(function() {
