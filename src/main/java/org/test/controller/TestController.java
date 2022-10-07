@@ -40,7 +40,9 @@ public class TestController {
 		}else {
 			System.out.println("jsp Folder already exists");
 		}
-		File jsp = new File(uploadFolder+"\\"+tv+"\\hi.jsp");
+		File jsp = new File(uploadFolder+"\\"+tv+"\\home.jsp");
+		File header = new File(uploadFolder+"\\"+tv+"\\header.jsp");
+		File footer = new File(uploadFolder+"\\"+tv+"\\footer.jsp");
 		try {
 			if(jsp.createNewFile()) {
 				System.out.println("jsp File created");
@@ -53,17 +55,31 @@ public class TestController {
 						"<html>\r\n" + 
 						"<head>\r\n" + 
 						"<meta charset=\"UTF-8\">\r\n" + 
-						"<title>hi "+tv+"</title>\r\n" + 
+						"<title>home "+tv+"</title>\r\n" + 
 						"<link rel='stylesheet' href='../resources/css/test_content.css'> "+
 						"</head>\r\n" + 
 						"<body>\r\n" +
+						"<%@ include file=\"header.jsp\"%>"+
 						"	<div id=\"side_list\">\n" + 
 						"        <div id=\"side_btn\">\n" + 
 						"            <img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAASFBMVEUAAAD////6+voXFxfv7+8ODg6dnZ0ICAi6urqXl5djY2MtLS0aGhrn5+egoKBDQ0NycnJ7e3vExMSKior19fXq6upKSkrg4OBTz6uIAAACa0lEQVR4nO3d7W6qQBRG4dmUHmD4BpX7v9ODbU1HkXPawHaHyXr+NeHHu2JURFKdLKR54csqc8eSVaUv8nSZ4x7+rpvWeusmbVP/s3DqrBfuoJtWC5PeetxO+uR54WA9bEfDs8LRetWuxmWht960M/9YeLFetLvLfWFsj+CVDwvjeg7ejN+FMb2KhoZbYWK9RE3yVRjLG/1S/1k4We9QNH0UxnAuuqa7FtbWK1TVc2FjPUJVMxce+/Pg/7TiUusNylKXW09QlrvCeoKywsV4zh3yrrSeoKx0lfUEZZU72nXR34q9DwAAAAAAAACwxSl57hx+QfBHVo7a5vSSwvDmzVD6dleo4jW3/lBIIYUUUkghhRRSSCGFFFJIIYUUUkghhfs4p89NYWFxWjlqm/NLCqu3FeFB76tHbRL7XekAAAAAAAAAjuV9TXhQtnrUNi8pjP+ad/zfW1BIIYUUUkghhRRSSCGFFFJIIYUUUkghhfuI/3pp/Ne8AQAAAAAAAOBn4v+fCvFf847/ewsKKaSQQgoppJBCCimkkEIKKaSQQgoppHAf8f/uGgAAAAAAAADgmDLrAcoyF/uv0VWutJ6grHTeeoIy7wrrCcoKl1tPUJa71HqCstRJa71BVStOGusRqpq5sLYeoaqeC6WzXqGok2vhZD1D0fRRKL31DjW9fBa+5iYVC8lXoQzWS5QMciuU0XqLilG+CyXG828vYaFcrPfs7iL3hdE9il4eCyN7Lo6yLIzqFXWQZ4WSxPLW34e3wIaF8wlcDOeo3XTXdF8oUjfH/rzYNvVD0WPhLM0LX1ZHu46aVaUv8nSZ8xdXzzyNb8hrGQAAAABJRU5ErkJggg==\">\n" + 
 						"        </div>\n" + 
 						"        <div id=\"move_div_maker\">\n" + 
 						"            <img src=\"https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png\">\n" + 
-						"        </div>\n" + 
+						"        </div>\n" +
+						"		<div id=\"body_controller\">\n" + 
+						"            <div id=\"body_menu\">\n" + 
+						"                <div id=\"add_login\">로그인</div>\n" + 
+						"                <div id=\"add_home\">홈</div>\n" + 
+						"            </div>\n" + 
+						"        </div>\n"+
+						"		<div id='container_controller'>\r\n"+
+						"			<div id='container_menu'>\r\n"+
+						"				<div id='header_controller'>HEADER</div>\r\n"+
+						"				<div id='main_controller'>MAIN</div>\r\n"+
+						"				<div id='footer_controller'>FOOTER</div>\r\n"+
+						"			</div>\r\n"+
+						"		</div>\r\n"+
 						"    </div>\n" + 
 						"    <div id=\"move_div_area\">\n" + 
 						"    </div>"+
@@ -75,32 +91,52 @@ public class TestController {
 						"<div id='right_move_divs'>\r\n"+
 						"	<div id='font_color'>\r\n"+
 						"		글자 색\r\n"+
-						"	<div class='font_color'>\r\n"+
-						"		<div class='color' data-color='red'></div>\r\n"+
-						"		<div class='color' data-color='orange'></div>\r\n"+
-						"		<div class='color' data-color='yellow'></div>\r\n"+
-						"		<div class='color' data-color='green'></div>\r\n"+
-						"		<div class='color' data-color='blue'></div>\r\n"+
-						"		<div class='color' data-color='navy'></div>\r\n"+
-						"		<div class='color' data-color='purple'></div>\r\n"+
-						"	</div>\r\n"+
-						"	</div>\r\n"+
+						"		<div class='font_color'>\r\n"+
+						"			<div class='color' data-color='white'></div>\r\n"+
+						"			<div class='color' data-color='red'></div>\r\n"+
+						"			<div class='color' data-color='orange'></div>\r\n"+
+						"			<div class='color' data-color='yellow'></div>\r\n"+
+						"			<div class='color' data-color='green'></div>\r\n"+
+						"			<div class='color' data-color='blue'></div>\r\n"+
+						"			<div class='color' data-color='navy'></div>\r\n"+
+						"			<div class='color' data-color='purple'></div>\r\n"+
+						"			<div class='color' data-color='gray'></div>\r\n"+
+						"			<div class='color' data-color='black'></div>\r\n"+
+						"		</div>\r\n"+
+						"		</div>\r\n"+
 						"	<div id='background_color'>\r\n"+
 						"		배경 색\r\n"+
-						"	<div class='background_color'>\r\n"+
-						"		<div class='color' data-color='red'></div>\r\n"+
-						"		<div class='color' data-color='orange'></div>\r\n"+
-						"		<div class='color' data-color='yellow'></div>\r\n"+
-						"		<div class='color' data-color='green'></div>\r\n"+
-						"		<div class='color' data-color='blue'></div>\r\n"+
-						"		<div class='color' data-color='navy'></div>\r\n"+
-						"		<div class='color' data-color='purple'></div>\r\n"+
+						"		<div class='background_color'>\r\n"+
+						"			<div class='color' data-color='white'></div>\r\n"+
+						"			<div class='color' data-color='red'></div>\r\n"+
+						"			<div class='color' data-color='orange'></div>\r\n"+
+						"			<div class='color' data-color='yellow'></div>\r\n"+
+						"			<div class='color' data-color='green'></div>\r\n"+
+						"			<div class='color' data-color='blue'></div>\r\n"+
+						"			<div class='color' data-color='navy'></div>\r\n"+
+						"			<div class='color' data-color='purple'></div>\r\n"+
+						"			<div class='color' data-color='gray'></div>\r\n"+
+						"			<div class='color' data-color='black'></div>\r\n"+
+						"		</div>\r\n"+
+						"		</div>\r\n"+
+						"	<div id='size'>\r\n"+
+						"		박스크기\r\n"+
 						"	</div>\r\n"+
+						"	<div id='font_size'>\r\n"+
+						"		글씨크기\r\n"+
 						"	</div>\r\n"+
-						"	<div id='z'>\r\n"+
-						"		ㅋ\r\n"+
+						"	<div id='loc'>\r\n"+
+						"		위치\r\n"+
+						"		<div class='loc'>\r\n"+
+						"			<div class='locs' data-locs='move'>이동</div>\r\n"+
+						"			<div class='locs' data-locs='fix'>고정</div>\r\n"+
+						"		</div>\r\n"+
+						"	</div>\r\n"+
+						"	<div id='delete_target'>\r\n"+
+						"		삭제\r\n"+
 						"	</div>\r\n"+
 						"</div>\r\n"+
+						"<%@ include file=\"footer.jsp\"%>"+
 						"<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n"+
 						"<script src=\"../resources/js/test_content.js\">"+
 						
@@ -111,15 +147,48 @@ public class TestController {
 			}else {
 				System.out.println("jsp File already exists");
 			}
+			if(header.createNewFile()) {
+				System.out.println("header File created");
+				FileWriter fw = new FileWriter(header);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+						"    pageEncoding=\"UTF-8\"%>\r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+						"<div id='header'>\r\n"+
+						"\r\n"+
+						"</div>\r\n"+
+						""
+						);
+				bw.close();
+			}else {
+				System.out.println("header File already exists");
+			}
+			if(footer.createNewFile()) {
+				System.out.println("footer File created");
+				FileWriter fw = new FileWriter(footer);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+						"    pageEncoding=\"UTF-8\"%>\r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+						"<div id='footer'>\r\n"+
+						"\r\n"+
+						"</div>\r\n"+
+						""
+						);
+				bw.close();
+			}else {
+				System.out.println("footer File already exists");
+			}
 
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		
 	}
 
-	@RequestMapping(value = "/{tv}/hi", method = RequestMethod.GET)
-	public void hi() {
+	@RequestMapping(value = "/{tv}/home", method = RequestMethod.GET)
+	public void home() {
 
 	}
 
@@ -178,6 +247,56 @@ public class TestController {
 	public ResponseEntity<ContentVO> load(ContentVO cvo) {
 		
 		return new ResponseEntity<>(ts.load(cvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/test/header_controller", method = RequestMethod.GET)
+	public void headerController() {
+		
+	}
+	
+	@RequestMapping(value = "/loadheader", method = RequestMethod.GET)
+	public ResponseEntity<ContentVO> loadHeader(ContentVO cvo) {
+		
+		return new ResponseEntity<>(ts.loadHeader(cvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/saveheader", method = RequestMethod.POST)
+	public ResponseEntity<String> saveHeader(@RequestBody ContentVO cvo) {
+		int result = ts.saveHeader(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/modifyheader", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyHeader(@RequestBody ContentVO cvo) {
+		int result = ts.modifyHeader(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/test/footer_controller", method = RequestMethod.GET)
+	public void footerController() {
+		
+	}
+	
+	@RequestMapping(value = "/loadfooter", method = RequestMethod.GET)
+	public ResponseEntity<ContentVO> loadFooter(ContentVO cvo) {
+		
+		return new ResponseEntity<>(ts.loadFooter(cvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/savefooter", method = RequestMethod.POST)
+	public ResponseEntity<String> saveFooter(@RequestBody ContentVO cvo) {
+		int result = ts.saveFooter(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/modifyfooter", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyFooter(@RequestBody ContentVO cvo) {
+		int result = ts.modifyFooter(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 }

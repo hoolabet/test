@@ -5,5 +5,5 @@
 const tv = $("#tv").html();
 
 setTimeout(() => {
-	location.href = `/${tv}/hi`;
+	location.href = `/${tv}/home`;
 }, 5000);

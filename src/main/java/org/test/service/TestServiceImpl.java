@@ -25,4 +25,28 @@ public class TestServiceImpl implements TestService{
 	public int modify(ContentVO cvo) {
 		return tm.modify(cvo);
 	}
+	
+	public ContentVO loadHeader(ContentVO cvo) {
+		return tm.loadHeader(cvo);
+	}
+	
+	public ContentVO loadFooter(ContentVO cvo) {
+		return tm.loadFooter(cvo);
+	}
+	
+	public int saveHeader(ContentVO cvo) {
+		return tm.saveHeader(cvo);
+	}
+
+	public int modifyHeader(ContentVO cvo){
+		return tm.modifyHeader(cvo);
+	}
+
+	public int saveFooter(ContentVO cvo){
+		return tm.saveFooter(cvo);
+	}
+
+	public int modifyFooter(ContentVO cvo){
+		return tm.modifyFooter(cvo);
+	}
 }

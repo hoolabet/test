@@ -12,4 +12,16 @@ public interface TestMapper {
 
 	public int modify(ContentVO cvo);
 
+	public ContentVO loadHeader(ContentVO cvo);
+
+	public ContentVO loadFooter(ContentVO cvo);
+
+	public int saveHeader(ContentVO cvo);
+
+	public int modifyHeader(ContentVO cvo);
+
+	public int saveFooter(ContentVO cvo);
+
+	public int modifyFooter(ContentVO cvo);
+
 }

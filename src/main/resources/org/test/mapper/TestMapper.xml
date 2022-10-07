@@ -21,4 +21,32 @@
 		SET content = #{content}
 		WHERE url = #{url}
 	</update>
+	
+	<select id="loadHeader" resultType="org.test.model.ContentVO">
+		SELECT * FROM header WHERE url=#{url}
+	</select>
+	
+	<select id="loadFooter" resultType="org.test.model.ContentVO">
+		SELECT * FROM footer WHERE url=#{url}
+	</select>
+	
+	<insert id="saveHeader">
+		INSERT INTO header(url,content)
+		VALUES(#{url},#{content})
+	</insert>
+	<update id="modifyHeader">
+		UPDATE header 
+		SET content=#{content}
+		WHERE url=#{url}
+	</update>
+	
+	<insert id="saveFooter">
+		INSERT INTO footer(url,content)
+		VALUES(#{url},#{content})
+	</insert>
+	<update id="modifyFooter">
+		UPDATE footer 
+		SET content=#{content}
+		WHERE url=#{url}
+	</update>
 </mapper>
