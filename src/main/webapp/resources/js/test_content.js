@@ -2,6 +2,7 @@ const tv = $("#save").data("tv");
 
 $.getJSON("/loadheader",{url:tv},function(res){
 	$("#header").html(res.content);
+	$("#header").css("background-color", "inherit");
 })
 
 $.getJSON("/loadfooter",{url:tv},function(res){
@@ -607,7 +608,7 @@ function loadFunc(){
 				`;
 			$("#move_div_area").append(home);
 			$("#home_value").val($("#home_name").html());
-			$("#home_name_modify").on("click",function(){
+			$("#home_name_modify").off("click").on("click",function(){
 				$("#home_a").toggle();
 				$("#home_value_span").toggle();
 			})
@@ -618,6 +619,18 @@ function loadFunc(){
 			})
 			dragElement($("#div_home_home")[0]);
 		})
+		
+		$("#home_value").val($("#home_name").html());
+			$("#home_name_modify").off("click").on("click",function(){
+				$("#home_a").toggle();
+				$("#home_value_span").toggle();
+			})
+			$("#home_value_btn").on("click", function() {
+				$("#home_name").html($("#home_value").val());
+				$("#home_a").toggle();
+				$("#home_value_span").toggle();
+			})
+		
 		$("#container_controller").off("click").on("click", function(e){
 			$("#container_menu").css("top","100px");
 			$("#container_menu").css("left","100px");

@@ -56,7 +56,9 @@ public class TestController {
 						"<head>\r\n" + 
 						"<meta charset=\"UTF-8\">\r\n" + 
 						"<title>home "+tv+"</title>\r\n" + 
-						"<link rel='stylesheet' href='../resources/css/test_content.css'> "+
+						"<link rel='stylesheet' href='../resources/css/test_content.css'> \r\n"+
+						"<link rel='stylesheet' href='../resources/css/test_header_controller.css'> \r\n"+
+						"<link rel='stylesheet' href='../resources/css/test_footer_controller.css'> \r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" +
 						"<%@ include file=\"header.jsp\"%>"+
