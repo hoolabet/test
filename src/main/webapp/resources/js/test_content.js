@@ -3,6 +3,14 @@ const tv = $("#save").data("tv");
 $.getJSON("/loadheader",{url:tv},function(res){
 	$("#header").html(res.content);
 	$("#header").css("background-color", "inherit");
+	const top = $("#margin_top").data("margin");
+	const right = $("#margin_right").data("margin");
+	const bottom = $("#margin_bottom").data("margin");
+	const left = $("#margin_left").data("margin");
+	$("body").css("margin-top",`${top}px`);
+	$("body").css("margin-right",`${right}px`);
+	$("body").css("margin-bottom",`${bottom}px`);
+	$("body").css("margin-left",`${left}px`);
 })
 
 $.getJSON("/loadfooter",{url:tv},function(res){

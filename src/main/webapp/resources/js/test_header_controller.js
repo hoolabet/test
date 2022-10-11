@@ -49,10 +49,20 @@ const url = $("#tv").val();
 $("#load").on("click",function(){
 	$.getJSON("/loadheader",{url},function(res){
 		$("#header").html(res.content);
+		$(".move_divs_handler").css("display","flex");
+		$("#home_name_modify").css("display","flex");
+		$(".add_li").css("display","flex");
+		$("#div_home_home").css("border","1px solid black");
+		$(".list_div").css("border","1px solid black");
 	})
 })
 
 $("#save").on("click",function(){
+	$(".move_divs_handler").css("display","none");
+	$("#home_name_modify").css("display","none");
+	$(".add_li").css("display","none");
+	$("#div_home_home").css("border","0");
+	$(".list_div").css("border","0");
 	$.getJSON("/loadheader",{url},function(res){
 		if(confirm("이미 저장된 자료가 있습니다. 덮어씌우시겠습니까?")){
 			$.ajax({
@@ -86,30 +96,49 @@ $("#save").on("click",function(){
 $(document).on("contextmenu",function(e){
 	e.preventDefault();
 	console.log(e.target.className);
-	console.log(e.target == document.querySelector("html"));
-	if(e.target.className =="header" || e.target.className == "list_div" || e.target.className == "list_li"){
+	console.log(e.target.id);
+	if(e.target.className =="header" 
+		|| e.target.className == "list_div" 
+		|| e.target.className == "list_li" 
+		|| e.target.id == "entry"
+		|| e.target.className == "div_home"
+		
+	){
 		$("#right_a").css("display","none");
 		$("#right_container").css("top",e.clientY);
 		$("#right_container").css("left",e.clientX);
 		$("#right_container").css("display","flex");
-		$("#right_container").data("class",e.target.className);
-		$("#right_container").data("target",$(e.target).data("target"));
 		$(".font_color").css("top","0px");
 		$(".font_color").css("left","100px");
 		$(".background_color").css("top","32px");
 		$(".background_color").css("left","100px");
 		$(".blank").css("top","128px");
 		$(".blank").css("left","100px");
+		if(e.target.id == "entry"){
+			$("#right_container").data("target","entry");
+			$("#font_color").css("display","none");
+			$("#size").css("display","none");
+			$("#font_size").css("display","none");
+			$(".background_color").css("top","0px");
+			$(".blank").css("top","32px");
+		}else{
+			$("#right_container").data("class",e.target.className);
+			$("#right_container").data("target",$(e.target).data("target"));
+			$("#font_color").css("display","flex");
+			$("#size").css("display","flex");
+			$("#font_size").css("display","flex");
+		}
 	}else if(e.target.className == "list_li_a"){
 		$("#right_container").css("display","none");
+		$("#right_container").data("class",e.target.className);
+		$("#right_container").data("target",$(e.target).data("target"));
 		$("#right_a").css("top",e.clientY);
 		$("#right_a").css("left",e.clientX);
 		$("#right_a").css("display","flex");
-		$("#right_container").data("class",e.target.className);
-		$("#right_container").data("target",$(e.target).data("target"));
 		$(".font_color").css("top","0px");
 		$(".font_color").css("left","100px");
 	}
+
 })
 
 $(document).on("click", function() {
@@ -126,9 +155,17 @@ $(".background_color").children().each(function(i,c) {
 
 $(".color").on("click", function() {
 	if($(this).parent().prop("class") == "font_color"){
-		$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("color",$(this).data("color"));
+		if($("#right_container").data("class") == "div_home"){
+			$("#home_name").css("color",$(this).data("color"));
+		}else{
+			$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("color",$(this).data("color"));
+		}
 	}else if($(this).parent().prop("class") == "background_color"){
-		$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("background-color",$(this).data("color"));
+		if($("#right_container").data("target") == "entry"){
+			$("#entry").css("background-color",$(this).data("color"));
+		}else{
+			$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("background-color",$(this).data("color"));
+		}
 	}
 })
 
@@ -173,23 +210,23 @@ $("#add_list").on("click",function(){
 	let cnt = Date.now();
 	const ce = `
 		<div id="list_div_${cnt}" class="list_div" data-target="${cnt}">
-			<div class="move_divs_handler" id="div_home_handler_home">✔</div>
-			<img class="add_li" data-target="${cnt}" src="https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png">
-			<ul id="list_ul_${cnt}" class="list_ul" data-target="${cnt}"></ul>
+		<div class="move_divs_handler" id="div_home_handler_home">✔</div>
+		<img class="add_li" data-target="${cnt}" src="https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png">
+		<ul id="list_ul_${cnt}" class="list_ul" data-target="${cnt}"></ul>
 		</div>
-	`;
+		`;
 	$("#header_1").append(ce);
 	dragElement($(`#list_div_${cnt}`)[0]);
-	
+
 	$(".add_li").off("click").on("click", function() {
 		let cnt = Date.now();
 		const cli = `
 			<li id="list_li_${cnt}" class="list_li" data-target="${cnt}">
-				<a href="#" id="list_li_a_${cnt}" class="list_li_a" data-target="${cnt}">-목록-</a> 
+			<a href="#" id="list_li_a_${cnt}" class="list_li_a" data-target="${cnt}">-목록-</a> 
 			</li>
-		`;
+			`;
 		$(`#list_ul_${$(this).data("target")}`).append(cli);
-		
+
 	})
 })
 
@@ -205,18 +242,76 @@ $("#a_change").on("click", function() {
 	$(`#list_li_a_${cnt}`).html(cont);
 	$(`#list_li_a_${cnt}`).prop("href",hr);
 	alert(`변경되었습니다.
-		제목 : ${$(`#list_li_a_${cnt}`).html()}
-		주소 : ${$(`#list_li_a_${cnt}`).prop("href")}
-		`);	
+			제목 : ${$(`#list_li_a_${cnt}`).html()}
+			주소 : ${$(`#list_li_a_${cnt}`).prop("href")}
+	`);	
 })
 
 $(".blanks").on("click", function(){
 	const blank = $(this).data("blank");
-	const val = $(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css(`margin-${blank}`);
-	const prom = prompt(`공백 값을 적어주세요. 현재 ${this.innerText} 값 : ${val}`);
-	if(isNaN(prom)){
-		alert("숫자만 입력하세요.");
-		return false;
+	if($("#right_container").data("target") == "1"){
+		const val = $("body").css(`margin-${blank}`);
+		const prom = prompt(`공백 값을 적어주세요. 현재 ${this.innerText} 값 : ${val}`);
+		if(isNaN(prom)){
+			alert("숫자만 입력하세요.");
+			return false;
+		}
+
+		$("body").css(`margin-${blank}`,prom+"px");
+		console.log($(`#margin_${blank}`));
+		if($(`#margin_${blank}`).length != 0){
+			$(`#margin_${blank}`).remove();
+			console.log(`#margin_${blank} 삭제`);
+		}
+		const margin = `<input type="hidden" id="margin_${blank}" data-margin=${prom}>`;
+		$("#header").append(margin);
+		console.log(`#margin_${blank} 생성`);
+		console.log($(`#margin_${blank}`));
+	}else{
+		const val = $(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css(`margin-${blank}`);
+		const prom = prompt(`공백 값을 적어주세요. 현재 ${this.innerText} 값 : ${val}`);
+		if(isNaN(prom)){
+			alert("숫자만 입력하세요.");
+			return false;
+		}
+		$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css(`margin-${blank}`,prom+"px");
 	}
-	$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css(`margin-${blank}`,prom+"px");
+})
+
+$("#add_home").on("click", function() {
+	$(this).toggle();
+	const home = `
+		<div id="div_home_home" class="div_home" data-target="home">
+		<div class="move_divs_handler" id="div_home_handler_home">✔</div>
+		<a href="/${url}/home" id="home_a"><div id="home_name">HOME</div></a>
+		<div id="home_value_div">
+		<input type="text" id="home_value">
+		<input type="button" id="home_value_btn" value="수정">
+		</div>
+		<span id="home_name_modify">🛠</span>
+		</div>
+		`;
+	$("#header").append(home);
+	$("#home_value").val($("#home_name").html());
+	$("#home_name_modify").on("click",function(){
+		$("#home_a").toggle();
+		$("#home_value_div").toggle();
+	})
+	$("#home_value_btn").on("click", function() {
+		$("#home_name").html($("#home_value").val());
+		$("#home_a").toggle();
+		$("#home_value_div").toggle();
+	})
+	dragElement($("#div_home_home")[0]);
+})
+
+$("#delete_target").on("click", function() {
+	if($("#right_container").data("target")=="entry" || $("#right_container").data("target") == "1"){
+		alert("이 영역은 삭제할 수 없습니다.");
+	}else{
+		$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).remove();
+		if(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}` == "#div_home_home"){
+			$("#add_home").toggle();
+		}
+	}
 })

@@ -61,6 +61,11 @@ public class TestController {
 						"<link rel='stylesheet' href='../resources/css/test_footer_controller.css'> \r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" +
+						"<div id='btns'>"+
+						"	<input type='button' value='저장' id='save' data-tv='"+tv+"'>\r\n"+
+						"	<input type='button' value='삭제' id='remove' data-tv='"+tv+"'>\r\n"+
+						"	<input type='button' value='불러오기' id='load' data-tv='"+tv+"'>\r\n"+
+						"</div>\r\n"+
 						"<%@ include file=\"header.jsp\"%>"+
 						"	<div id=\"side_list\">\n" + 
 						"        <div id=\"side_btn\">\n" + 
@@ -72,7 +77,6 @@ public class TestController {
 						"		<div id=\"body_controller\">\n" + 
 						"            <div id=\"body_menu\">\n" + 
 						"                <div id=\"add_login\">로그인</div>\n" + 
-						"                <div id=\"add_home\">홈</div>\n" + 
 						"            </div>\n" + 
 						"        </div>\n"+
 						"		<div id='container_controller'>\r\n"+
@@ -85,11 +89,6 @@ public class TestController {
 						"    </div>\n" + 
 						"    <div id=\"move_div_area\">\n" + 
 						"    </div>"+
-						"<div id='btns'>"+
-						"	<input type='button' value='저장' id='save' data-tv='"+tv+"'>\r\n"+
-						"	<input type='button' value='삭제' id='remove' data-tv='"+tv+"'>\r\n"+
-						"	<input type='button' value='불러오기' id='load' data-tv='"+tv+"'>\r\n"+
-						"</div>\r\n"+
 						"<div id='right_move_divs'>\r\n"+
 						"	<div id='font_color'>\r\n"+
 						"		글자 색\r\n"+
