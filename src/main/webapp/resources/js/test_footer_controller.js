@@ -14,8 +14,8 @@ function dragElement(elmnt) {
 		e = e || window.event;
 		e.preventDefault();
 		// get the mouse cursor position at startup:
-		pos3 = e.clientX;
-		pos4 = e.clientY;
+		pos3 = e.pageX;
+		pos4 = e.pageY;
 		document.onmouseup = closeDragElement;
 		// call a function whenever the cursor moves:
 		document.onmousemove = elementDrag;
@@ -26,10 +26,10 @@ function dragElement(elmnt) {
 		e = e || window.event;
 		e.preventDefault();
 		// calculate the new cursor position:
-		pos1 = pos3 - e.clientX;
-		pos2 = pos4 - e.clientY;
-		pos3 = e.clientX;
-		pos4 = e.clientY;
+		pos1 = pos3 - e.pageX;
+		pos2 = pos4 - e.pageY;
+		pos3 = e.pageX;
+		pos4 = e.pageY;
 		// set the element's new position:
 		elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
 		elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
@@ -95,8 +95,8 @@ $(document).on("contextmenu",function(e){
 		
 	){
 		$("#right_a").css("display","none");
-		$("#right_container").css("top",e.clientY);
-		$("#right_container").css("left",e.clientX);
+		$("#right_container").css("top",e.pageY);
+		$("#right_container").css("left",e.pageX);
 		$("#right_container").css("display","flex");
 		$(".font_color").css("top","0px");
 		$(".font_color").css("left","100px");

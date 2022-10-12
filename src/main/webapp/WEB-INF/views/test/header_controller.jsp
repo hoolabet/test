@@ -76,6 +76,14 @@
 					<div class="blanks" data-blank="right">우</div>
 				</div>
 			</div>
+			<div id='loc'>
+				위치
+				<div class='loc'>
+					<div class='locs' data-locs='move'>이동</div>
+					<div class='locs' data-locs='center'>가운데 정렬</div>
+					<div class='locs' data-locs='fix'>고정</div>
+				</div>
+			</div>
 			<div id='delete_target'>삭제</div>
 		</div>
 		<div id="right_a">

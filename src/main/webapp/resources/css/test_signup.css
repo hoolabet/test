@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+#entry{
+	height: 600px;
+	position: relative;
+	display: flex;
+	justify-content:space-around;
+	align-items: center;
+}
+
+#remove{ 
+    position: absolute;
+    right:50px;
+}
+#save{
+    position: absolute;
+    right:100px;
+}
+
+#sign_div {
+	position: absolute;
+}
+
+#sign_table tr, #sign_table td {
+	border: 1px solid black;
+}
+
+#sign_img {
+	cursor:pointer;
+	width: 30px;
+}
+
+#sign_element, #modify_span, #modify_input{
+	position: absolute;
+	width: 100px;
+	display: none;
+	background-color: #ebebeb;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.sign_element, .modify_span, .modify_input{
+	margin: 0;
+	width: 100px;
+	height: 30px;
+	border: 1px solid black;
+}
+
+.sign_element:hover, .modify_span:hover, .modify_input:hover{
+	background-color: #52afe8;
+}
+
+.modify_input {
+	width: 100px;
+	background-color: #ebebeb;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.reg {
+	position:relative;
+	display:none;
+	margin: 0;
+	width: 100px;
+	height: 30px;
+	left:100px;
+	border: 1px solid black;
+	background-color:#ebebeb;
+}
+
+#reg:hover .reg{
+	display:flex;
+}
+
+.reg:hover {
+	background-color: #52afe8;
+}

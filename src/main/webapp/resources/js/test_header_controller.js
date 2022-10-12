@@ -14,8 +14,8 @@ function dragElement(elmnt) {
 		e = e || window.event;
 		e.preventDefault();
 		// get the mouse cursor position at startup:
-		pos3 = e.clientX;
-		pos4 = e.clientY;
+		pos3 = e.pageX;
+		pos4 = e.pageY;
 		document.onmouseup = closeDragElement;
 		// call a function whenever the cursor moves:
 		document.onmousemove = elementDrag;
@@ -26,10 +26,10 @@ function dragElement(elmnt) {
 		e = e || window.event;
 		e.preventDefault();
 		// calculate the new cursor position:
-		pos1 = pos3 - e.clientX;
-		pos2 = pos4 - e.clientY;
-		pos3 = e.clientX;
-		pos4 = e.clientY;
+		pos1 = pos3 - e.pageX;
+		pos2 = pos4 - e.pageY;
+		pos3 = e.pageX;
+		pos4 = e.pageY;
 		// set the element's new position:
 		elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
 		elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
@@ -105,15 +105,11 @@ $(document).on("contextmenu",function(e){
 		
 	){
 		$("#right_a").css("display","none");
-		$("#right_container").css("top",e.clientY);
-		$("#right_container").css("left",e.clientX);
-		$("#right_container").css("display","flex");
-		$(".font_color").css("top","0px");
-		$(".font_color").css("left","100px");
-		$(".background_color").css("top","32px");
-		$(".background_color").css("left","100px");
-		$(".blank").css("top","128px");
-		$(".blank").css("left","100px");
+		$("#right_container").css("top",e.pageY).css("left",e.pageX).css("display","flex");
+		$(".font_color").css("top","0px").css("left","100px");
+		$(".background_color").css("top","32px").css("left","100px");
+		$(".blank").css("top","128px").css("left","100px");
+		$(".loc").css("top","160px").css("left","100px");
 		if(e.target.id == "entry"){
 			$("#right_container").data("target","entry");
 			$("#font_color").css("display","none");
@@ -132,11 +128,8 @@ $(document).on("contextmenu",function(e){
 		$("#right_container").css("display","none");
 		$("#right_container").data("class",e.target.className);
 		$("#right_container").data("target",$(e.target).data("target"));
-		$("#right_a").css("top",e.clientY);
-		$("#right_a").css("left",e.clientX);
-		$("#right_a").css("display","flex");
-		$(".font_color").css("top","0px");
-		$(".font_color").css("left","100px");
+		$("#right_a").css("top",e.pageY).css("left",e.pageX).css("display","flex");
+		$(".font_color").css("top","0px").css("left","100px");
 	}
 
 })
@@ -210,7 +203,7 @@ $("#add_list").on("click",function(){
 	let cnt = Date.now();
 	const ce = `
 		<div id="list_div_${cnt}" class="list_div" data-target="${cnt}">
-		<div class="move_divs_handler" id="div_home_handler_home">✔</div>
+		<div class="move_divs_handler" id="list_div_handler_${cnt}">✔</div>
 		<img class="add_li" data-target="${cnt}" src="https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png">
 		<ul id="list_ul_${cnt}" class="list_ul" data-target="${cnt}"></ul>
 		</div>
@@ -312,6 +305,30 @@ $("#delete_target").on("click", function() {
 		$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).remove();
 		if(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}` == "#div_home_home"){
 			$("#add_home").toggle();
+		}
+	}
+})
+
+$(".locs").on("click", function() {
+	const id = `${$("#right_container").data("class")}_${$("#right_container").data("target")}`;
+	const locs = $(this).data("locs");
+	if(locs == "move"){
+		const top = prompt("x 좌표",$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("top").replace("px",""));
+		const left = prompt("y 좌표",$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("left").replace("px",""));
+		if(isNaN(top) || isNaN(left) || top <= 0 || left <= 0){
+			alert("0보다 큰 숫자만 입력하세요");
+			return false;
+		}
+		$(`#${id}`).css("top",top+"px");
+		$(`#${id}`).css("left",left+"px");
+	}else if(locs == "fix"){
+		$(`#${$("#right_container").data("class")}_handler_${$("#right_container").data("target")}`).toggle();
+	}else if(locs == "center"){
+		if(id == "header_1"){
+			alert("가운데 정렬을 할 수 없습니다.")
+		}else{
+			const leftVal = 960 - $(`#${id}`).css("width").replace("px","")/2;
+			$(`#${id}`).css("left",leftVal);
 		}
 	}
 })

@@ -132,6 +132,7 @@
 	border: 1px solid black;
 	top: 100px;
 	left: 500px;
+	display:flex;
 }
 
 .add_li {
@@ -148,6 +149,7 @@
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	padding:0px;
 }
 
 .list_li{
@@ -193,14 +195,14 @@
 	align-items: center;
 }
 
-#font_color, #background_color, #size, #font_size, #blank, #delete_target{
+#font_color, #background_color, #size, #font_size, #blank, #delete_target, #loc{
 	margin: 0;
 	width: 100px;
 	height: 30px;
 	border: 1px solid black;
 }
 
-.color, .blanks{
+.color, .blanks, .locs{
 	margin: 0;
 	width: 100px;
 	height: 30px;
@@ -208,11 +210,11 @@
 	background-color: #ebebeb;
 }
 
-#font_color:hover, #background_color:hover, #size:hover, #font_size:hover, #blank:hover, #delete_target:hover{
+#font_color:hover, #background_color:hover, #size:hover, #font_size:hover, #blank:hover, #delete_target:hover, #loc:hover{
 	background-color: #52afe8;
 }
 
-.font_color, .background_color, .blank{
+.font_color, .background_color, .blank, .loc{
 	position: absolute;
 	width: 100px;
 	display: none;
@@ -220,10 +222,10 @@
 	justify-content: space-around;
 	align-items: center;
 }
-#font_color:hover .font_color, #background_color:hover .background_color, #blank:hover .blank{
+#font_color:hover .font_color, #background_color:hover .background_color, #blank:hover .blank, #loc:hover .loc{
 	display: flex;
 }
 
-.blanks:hover{
+.blanks:hover, .locs:hover{
 	background-color: #52afe8;
 }

@@ -5,15 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>home aa</title>
+<title>home a</title>
 <link rel='stylesheet' href='../resources/css/test_content.css'> 
 <link rel='stylesheet' href='../resources/css/test_header_controller.css'> 
 <link rel='stylesheet' href='../resources/css/test_footer_controller.css'> 
 </head>
 <body>
-<div id='btns'>	<input type='button' value='저장' id='save' data-tv='aa'>
-	<input type='button' value='삭제' id='remove' data-tv='aa'>
-	<input type='button' value='불러오기' id='load' data-tv='aa'>
+<div id='btns'>	<input type='button' value='저장' id='save' data-tv='a'>
+	<input type='button' value='삭제' id='remove' data-tv='a'>
+	<input type='button' value='불러오기' id='load' data-tv='a'>
 </div>
 <%@ include file="header.jsp"%>	<div id="side_list">
         <div id="side_btn">
@@ -77,6 +77,7 @@
 		위치
 		<div class='loc'>
 			<div class='locs' data-locs='move'>이동</div>
+			<div class='locs' data-locs='center'>가운데 정렬</div>
 			<div class='locs' data-locs='fix'>고정</div>
 		</div>
 	</div>

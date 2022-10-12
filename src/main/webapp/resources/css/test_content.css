@@ -9,14 +9,14 @@
 	z-index: -99;
 } */
 
-#footer{
+/* #footer{
 	width: 100%;
 	height: 150px;
 	background-color: #e3e3e3;
 	position:absolute;
 	bottom:0;
 	z-index: -99;
-}
+} */
 
 #side_btn img {
     width: 50px;
@@ -136,6 +136,10 @@
     right:150px;
 }
 
+#move_div_area{
+	height:1000px;
+}
+
 #right_move_divs{
 	position: absolute;
 	width: 100px;
@@ -232,6 +236,9 @@
     top: 200px;
     text-align: center;
     background-color: white;
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 #div_home_home{

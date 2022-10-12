@@ -41,6 +41,7 @@ public class TestController {
 			System.out.println("jsp Folder already exists");
 		}
 		File jsp = new File(uploadFolder+"\\"+tv+"\\home.jsp");
+		File signUpJsp = new File(uploadFolder+"\\"+tv+"\\signup.jsp");
 		File header = new File(uploadFolder+"\\"+tv+"\\header.jsp");
 		File footer = new File(uploadFolder+"\\"+tv+"\\footer.jsp");
 		try {
@@ -130,6 +131,7 @@ public class TestController {
 						"		위치\r\n"+
 						"		<div class='loc'>\r\n"+
 						"			<div class='locs' data-locs='move'>이동</div>\r\n"+
+						"			<div class='locs' data-locs='center'>가운데 정렬</div>\r\n"+
 						"			<div class='locs' data-locs='fix'>고정</div>\r\n"+
 						"		</div>\r\n"+
 						"	</div>\r\n"+
@@ -181,6 +183,83 @@ public class TestController {
 				System.out.println("footer File already exists");
 			}
 
+			if(signUpJsp.createNewFile()) {
+				System.out.println("signup File created");
+				FileWriter fw = new FileWriter(signUpJsp);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+						"    pageEncoding=\"UTF-8\"%>\r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" + 
+						"<!DOCTYPE html>\r\n" + 
+						"<html>\r\n" + 
+						"<head>\r\n" + 
+						"<meta charset=\"UTF-8\">\r\n" + 
+						"<title>sign up "+tv+"</title>\r\n" + 
+						"<link rel='stylesheet' href='../resources/css/test_signup.css'> \r\n"+
+						"<link rel='stylesheet' href='../resources/css/test_header_controller.css'> \r\n"+
+						"<link rel='stylesheet' href='../resources/css/test_footer_controller.css'> \r\n"+
+						"</head>\r\n" + 
+						"<body>\r\n" +
+						"<div id='btns'>"+
+						"	<input type='button' value='저장' id='save' data-tv='"+tv+"'>\r\n"+
+						"	<input type='button' value='삭제' id='remove' data-tv='"+tv+"'>\r\n"+
+						"	<input type='button' value='불러오기' id='load' data-tv='"+tv+"'>\r\n"+
+						"</div>\r\n"+
+						"<%@ include file=\"header.jsp\"%>\r\n"+
+						"<div id='entry'>\r\n"+
+						"	<div id='sign_div'>\r\n"+
+						"		<form id='sign_form'>\r\n"+
+						"			<table id='sign_table'>\r\n"+
+						"				<tr>\r\n"+
+						"					<td style='width:150px;'><span class='modi_span' id='id_span'>ID</span></td>\r\n"+
+						"					<td style='width:500px;'><input class='modi_input' type='text' name='id' id='id' required></td>\r\n"+
+						"				</tr>\r\n"+
+						"				<tr>\r\n"+
+						"					<td><span class='modi_span' id='pw_span'>PASSWORD</span></td>\r\n"+
+						"					<td><input class='modi_input' type='password' name='password' id='pw' required></td>\r\n"+
+						"				</tr>\r\n"+
+						"				<tr>\r\n"+
+						"					<td><span class='modi_span' id='pwc_span'>PASSWORD CHECK</span></td>\r\n"+
+						"					<td><input class='modi_input' type='password' id='pw_check' required></td>\r\n"+
+						"				</tr>\r\n"+
+						"				<tr id='before'>\r\n"+
+						"					<td><img id='sign_img' src='https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png'></td>\r\n"+
+						"					<td><input type='submit' value='가입하기' id='sign_submit'></td>\r\n"+
+						"				</tr>\r\n"+
+						"			</table>\r\n"+
+						"		</form>\r\n"+
+						"	</div>\r\n"+
+						"	<div id='sign_element'>\r\n"+
+						"		<div class='sign_element' id='sign_name'>이름</div>\r\n"+
+						"		<div class='sign_element' id='sign_mail'>이메일</div>\r\n"+
+						"		<div class='sign_element' id='sign_phone'>전화번호</div>\r\n"+
+						"		<div class='sign_element' id='sign_birth'>생년월일</div>\r\n"+
+						"	</div>\r\n"+
+						"	<div id='modify_span'>\r\n"+
+						"		<div class='modify_span' id='ss_modify'>수정</div>\r\n"+
+						"	</div>\r\n"+
+						"	<div id='modify_input'>\r\n"+
+						"		<div class='modify_input' id='reg'>정규식 설정\r\n"+
+						"			<div class='reg' id='reg_free'>모두 허용</div>\r\n"+
+						"			<div class='reg' id='reg_str'>문자</div>\r\n"+
+						"			<div class='reg' id='reg_num'>숫자</div>\r\n"+
+						"			<div class='reg' id='reg_spe'>특수문자</div>\r\n"+
+						"		</div>\r\n"+
+						"		<div class='modify_input' id='len'>글자 수 설정</div>\r\n"+
+						"	</div>\r\n"+
+						"</div>\r\n"+
+						"<%@ include file=\"footer.jsp\"%>\r\n"+
+						"<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n"+
+						"<script src=\"../resources/js/test_signup.js\">"+
+						
+					"</script>\r\n"+
+					"</body>\r\n" + 
+						"</html>"
+						);
+				bw.close();
+			}else {
+				System.out.println("signup File already exists");
+			}
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -193,6 +272,11 @@ public class TestController {
 
 	}
 
+	@RequestMapping(value = "/{tv}/signup", method = RequestMethod.GET)
+	public void signUp() {
+		
+	}
+	
 	@RequestMapping(value = "/test/remove", method = RequestMethod.POST)
 	public ResponseEntity<String> remove(HttpSession session) {
 		String tv = (String)session.getAttribute("tv");
@@ -299,5 +383,6 @@ public class TestController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
 	
 }
