@@ -54,6 +54,38 @@ $("#load").on("click",function(){
 		$(".add_li").css("display","flex");
 		$("#div_home_home").css("border","1px solid black");
 		$(".list_div").css("border","1px solid black");
+		const top = $("#margin_top").data("margin");
+		const right = $("#margin_right").data("margin");
+		const bottom = $("#margin_bottom").data("margin");
+		const left = $("#margin_left").data("margin");
+		$("body").css("margin-top",`${top}px`);
+		$("body").css("margin-right",`${right}px`);
+		$("body").css("margin-bottom",`${bottom}px`);
+		$("body").css("margin-left",`${left}px`);
+		$("#home_value").val($("#home_name").html());
+		$("#home_name_modify").on("click",function(){
+			$("#home_a").toggle();
+			$("#home_value_div").toggle();
+		})
+		$("#home_value_btn").on("click", function() {
+			$("#home_name").html($("#home_value").val());
+			$("#home_a").toggle();
+			$("#home_value_div").toggle();
+		})
+		dragElement($("#div_home_home")[0]);
+		$(".list_div").each(function(i,d) {
+			dragElement(d);
+		})
+		$(".add_li").off("click").on("click", function() {
+			let cnt = Date.now();
+			const cli = `
+				<li id="list_li_${cnt}" class="list_li" data-target="${cnt}">
+				<a href="#" id="list_li_a_${cnt}" class="list_li_a" data-target="${cnt}">-목록-</a> 
+				</li>
+				`;
+			$(`#list_ul_${$(this).data("target")}`).append(cli);
+
+		})
 	})
 })
 
@@ -99,10 +131,10 @@ $(document).on("contextmenu",function(e){
 	console.log(e.target.id);
 	if(e.target.className =="header" 
 		|| e.target.className == "list_div" 
-		|| e.target.className == "list_li" 
-		|| e.target.id == "entry"
-		|| e.target.className == "div_home"
-		
+			|| e.target.className == "list_li" 
+				|| e.target.id == "entry"
+					|| e.target.className == "div_home"
+
 	){
 		$("#right_a").css("display","none");
 		$("#right_container").css("top",e.pageY).css("left",e.pageX).css("display","flex");

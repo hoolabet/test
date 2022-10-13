@@ -3,6 +3,22 @@
  */
 const tv = $("#save").data("tv");
 
+$.getJSON("/loadheader",{url:tv},function(res){
+	$("#header").html(res.content);
+	$("#header").css("background-color", "inherit");
+	$.getJSON("/loadfooter",{url:tv},function(res){
+		$("#footer").html(res.content);
+		const top = $("#margin_top").data("margin");
+		const right = $("#margin_right").data("margin");
+		const bottom = $("#margin_bottom").data("margin");
+		const left = $("#margin_left").data("margin");
+		$("body").css("margin-top",`${top}px`);
+		$("body").css("margin-right",`${right}px`);
+		$("body").css("margin-bottom",`${bottom}px`);
+		$("body").css("margin-left",`${left}px`);
+	})
+})
+
 $(document).on("contextmenu",function(e){
 	e.preventDefault();
 	if(e.target.className == "modi_input"){
@@ -60,9 +76,8 @@ $(".sign_element").on("click", function() {
 			<td><span class="modi_span" id="mail_span">E-MAIL</span><span class="tr_remove" data-id="${id}">❌</span></td>
 			<td>
 			<input class="modi_input" type="text" id="fe" required>@
-			<input class="modi_input" type="text" id="dir_address" required readonly>
+			<input class="modi_input" type="text" id="dir_address" required readonly value="naver.com">
 			<select id="address_select">
-			<option></option>
 			<option value="naver.com">naver.com</option>
 			<option value="google.com">google.com</option>
 			<option value="dir">직접입력</option>
@@ -211,32 +226,119 @@ $(".modi_input").off("keyup").on("keyup",function(e){
 
 $("#sign_submit").on("click", function(e) {
 	e.preventDefault();
+	let unable = false;
 	$("input[data-able]").each(function(i,a) {
 		if($(a).attr("data-able") == "f"){
-			console.log(a);
+			alert("필수 입력정보를 입력하세요.");
+			unable = true;
+			return false;
+		}
+	})
+
+	if(unable){
+		return false;
+	}
+	const id = $("#id").val();
+	const password = $("#pw").val();
+	const name = $("#name").val();
+	const email = $("#mail").val();
+	const phone = $("#phone").val();
+	const birth = $("#birth").val();
+
+	const sData = {
+			id,password,name,email,phone,birth
+	};
+
+	$.ajax({
+		type:"post",
+		url:"/signup",
+		data:JSON.stringify(sData),
+		contentType: "application/json; charset=utf-8",
+		success:function(){
+			alert("가입되었습니다.");
+			location.href = `/${tv}/home`;
+		},
+		error:function(){
+			alert("가입 실패");
 		}
 	})
 })
 
+$("#dup_check").on("click", function() {
+	$.getJSON("/dupcheck",{id:$("#id").val()},function(){
+		alert("중복된 id 입니다.");
+		$("#id").attr("data-able","f");
+		$(".id").html("중복된 id 입니다.").css("color","red");
+	})
+	.fail(function() {
+		alert("사용가능한 id 입니다.");
+		$("#id").attr("data-able","t");
+		$(".id").html("사용가능한 id 입니다.").css("color","green");
+	})
+})
+
 function createRegExp(e) {
-	const str = $(e.target).attr("data-str") == "on" ? `(?=.*[${reg.str}])` : "";
-	const num = $(e.target).attr("data-num") == "on" ? `(?=.*[${reg.num}])` : "";
-	const spe = $(e.target).attr("data-spe") == "on" ? `(?=.*[${reg.spe}])` : "";
-	const lenMin = $(e.target).attr("data-lenmin") == null ? "0" : $(e.target).attr("data-lenmin");
-	const lenMax = $(e.target).attr("data-lenmax") == null ? "100" : $(e.target).attr("data-lenmax");
+	let str = $(e.target).attr("data-str") == "on" ? `(?=.*[${reg.str}])` : "";
+	let num = $(e.target).attr("data-num") == "on" ? `(?=.*[${reg.num}])` : "";
+	let spe = $(e.target).attr("data-spe") == "on" ? `(?=.*[${reg.spe}])` : "";
+	let lenMin = $(e.target).attr("data-lenmin") == null ? "0" : $(e.target).attr("data-lenmin");
+	let lenMax = $(e.target).attr("data-lenmax") == null ? "100" : $(e.target).attr("data-lenmax");
+
+	if(e.target.id == "pw_check"){
+		str = $("#pw").attr("data-str") == "on" ? `(?=.*[${reg.str}])` : "";
+		num = $("#pw").attr("data-num") == "on" ? `(?=.*[${reg.num}])` : "";
+		spe = $("#pw").attr("data-spe") == "on" ? `(?=.*[${reg.spe}])` : "";
+		lenMin = $("#pw").attr("data-lenmin") == null ? "0" : $("#pw").attr("data-lenmin");
+		lenMax = $("#pw").attr("data-lenmax") == null ? "100" : $("#pw").attr("data-lenmax");
+	}
 
 	const regExp = new RegExp(`^${str}${num}${spe}.{${lenMin},${lenMax}}$`);
 	console.log(regExp);
 	console.log($(e.target).val());
 	console.log(regExp.test($(e.target).val()));
 	if(regExp.test($(e.target).val())){
-		$(`.${$(e.target).prop("id")}`).html("사용가능").css("color","green");
+		if(e.target.id == "fe"){
+			$(`.${$(e.target).prop("id")}`).html("사용가능").css("color","green");
+			$("#mail").attr("data-able","t");
+		}else if(e.target.id == "bp"){
+			$(`.${$(e.target).prop("id")}`).html("사용가능").css("color","green");
+			$("#phone").attr("data-able","t");
+		}else if(e.target.id == "pw" || e.target.id == "pw_check"){
+			if($("#pw").val() == $("#pw_check").val()){
+				$(".pw").html("비밀번호 확인").css("color","green");
+				$("#pw").attr("data-able","t");
+			}else{
+				$(".pw").html("비밀번호 확인바랍니다.").css("color","red");
+				$("#pw").attr("data-able","f");
+			}
+		}else if(e.target.id == "id"){
+			$(`.${$(e.target).prop("id")}`).html("중복 확인 해주세요.").css("color","blue");
+		}else{
+			$(`.${$(e.target).prop("id")}`).html("사용가능").css("color","green");
+			$(e.target).attr("data-able","t");
+		}
 	}else{
-		$(`.${$(e.target).prop("id")}`).html("사용불가").css("color","red");
+		if(e.target.id == "fe"){
+			$(`.${$(e.target).prop("id")}`).html("사용불가").css("color","red");
+			$("#mail").attr("data-able","f");
+		}else if(e.target.id == "bp"){
+			$(`.${$(e.target).prop("id")}`).html("사용불가").css("color","red");
+			$("#phone").attr("data-able","f");
+		}else if(e.target.id == "pw" || e.target.id == "pw_check"){
+			if($("#pw").val() == $("#pw_check").val()){
+				$(".pw").html("사용불가").css("color","red");
+			}else{
+				$(".pw").html("비밀번호 확인바랍니다.").css("color","red");
+				$("#pw").attr("data-able","f");
+			}
+		}else{
+			$(`.${$(e.target).prop("id")}`).html("사용불가").css("color","red");
+			$(e.target).attr("data-able","f");
+		}
 	}
 }
 $("#save").on("click",function(){
-	
+
 	$.getJSON("/loadsignup",{url:tv},function(res){
 		if(confirm("이미 저장된 자료가 있습니다. 덮어씌우시겠습니까?")){
 			$.ajax({
@@ -272,8 +374,88 @@ $("#load").on("click", function() {
 		$("#sign_div").html(res.content);
 		$(".check_span").html("");
 		$(".modi_input").val("");
-		$(".modi_input").off("keyup").on("keyup",function(e){
-			createRegExp(e);
-		})
+		loadFunc();
 	})
 })
+
+function loadFunc() {
+
+	
+	$(".modi_input").off("keyup").on("keyup",function(e){
+		createRegExp(e);
+	})
+
+	$("#sign_img").off("click").on("click", function(e) {
+		$("#sign_element").css("left",e.pageX).css("top",e.pageY).toggle();
+	})
+
+	$(".tr_remove").off("click").on("click", function() {
+		$(this).parent().parent().remove();
+		$(`#${$(this).data("id")}`).toggle();
+	})
+
+
+	$(".modi_span").off("click").on("click", function(e) {
+		$("#modify_span").css("left",e.pageX).css("top",e.pageY).toggle();
+		console.log($(this).prop("id"));
+		$("#ss_modify").data("id",$(this).prop("id"));
+	})
+
+	$("#ss_modify").off("click").on("click",function(){
+		const prom = prompt("변경할 내용을 적으세요.");
+		$(`#${$(this).data("id")}`).html(prom);
+	})
+
+	$("#sign_submit").off("click").on("click", function(e) {
+		e.preventDefault();
+		let unable = false;
+		$("input[data-able]").each(function(i,a) {
+			if($(a).attr("data-able") == "f"){
+				alert("필수 입력정보를 입력하세요.");
+				unable = true;
+				return false;
+			}
+		})
+
+		if(unable){
+			return false;
+		}
+		const id = $("#id").val();
+		const password = $("#pw").val();
+		const name = $("#name").val();
+		const email = $("#mail").val();
+		const phone = $("#phone").val();
+		const birth = $("#birth").val();
+
+		const sData = {
+				id,password,name,email,phone,birth
+		};
+
+		$.ajax({
+			type:"post",
+			url:"/signup",
+			data:JSON.stringify(sData),
+			contentType: "application/json; charset=utf-8",
+			success:function(){
+				alert("가입되었습니다.");
+				location.href = `/${tv}/home`;
+			},
+			error:function(){
+				alert("가입 실패");
+			}
+		})
+	})
+
+	$("#dup_check").off("click").on("click", function() {
+		$.getJSON("/dupcheck",{id:$("#id").val()},function(){
+			alert("중복된 id 입니다.");
+			$("#id").attr("data-able","f");
+			$(".id").html("중복된 id 입니다.").css("color","red");
+		})
+		.fail(function() {
+			alert("사용가능한 id 입니다.");
+			$("#id").attr("data-able","t");
+			$(".id").html("사용가능한 id 입니다.").css("color","green");
+		})
+	})
+}

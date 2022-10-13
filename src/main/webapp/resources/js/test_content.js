@@ -276,7 +276,8 @@ $("#footer_controller").on("click",function(){
 
 $('#remove').on('click',function(){
 	const tv = $(this).data("tv");
-	if(confirm('삭제하시겠습니까?')){
+	if(prompt(`삭제하시겠습니까?
+		삭제 하시려면 "삭제한다/${tv}" 를 입력하세요.`) == "삭제한다/"+tv){
 		$.ajax({
 			type:'post',
 			url:'/test/remove',
@@ -570,14 +571,17 @@ function loadFunc(){
 			if(`#${id}` == "#div_login_login"){
 				$("#add_login").toggle();
 			}
-			
+
 		})
 		$("#body_controller").off("click").on("click", function(e){
 			$("#body_menu").css("top","100px");
 			$("#body_menu").css("left","100px");
 			$("#body_menu").toggle();
 		})
-
+		$("#sign_up").on("click", function(e) {
+			e.preventDefault();
+			window.open(`/${tv}/signup`);
+		})
 		$("#add_login").off("click").on("click", function(){
 			$(this).toggle();
 			const login = `
@@ -605,24 +609,24 @@ function loadFunc(){
 				</div>
 				`;
 			$("#move_div_area").append(login);
-			$("#sign_up").on("click", function(e) {
+			$("#sign_up").off("click").on("click", function(e) {
 				e.preventDefault();
 				window.open(`/${tv}/signup`);
 			})
 			dragElement($("#div_login_login")[0]);
 		})
-		
+
 		$("#home_value").val($("#home_name").html());
-			$("#home_name_modify").off("click").on("click",function(){
-				$("#home_a").toggle();
-				$("#home_value_span").toggle();
-			})
-			$("#home_value_btn").on("click", function() {
-				$("#home_name").html($("#home_value").val());
-				$("#home_a").toggle();
-				$("#home_value_span").toggle();
-			})
-		
+		$("#home_name_modify").off("click").on("click",function(){
+			$("#home_a").toggle();
+			$("#home_value_span").toggle();
+		})
+		$("#home_value_btn").on("click", function() {
+			$("#home_name").html($("#home_value").val());
+			$("#home_a").toggle();
+			$("#home_value_span").toggle();
+		})
+
 		$("#container_controller").off("click").on("click", function(e){
 			$("#container_menu").css("top","100px");
 			$("#container_menu").css("left","100px");

@@ -214,7 +214,7 @@ public class TestController {
 						"			<table id='sign_table'>\r\n"+
 						"				<tr>\r\n"+
 						"					<td style='width:150px;'><span class='modi_span' id='id_span'>ID</span></td>\r\n"+
-						"					<td style='width:650px;'><input class='modi_input' type='text' name='id' id='id' required data-able='f'><span class='id check_span'></span></td>\r\n"+
+						"					<td style='width:650px;'><input class='modi_input' type='text' name='id' id='id' required data-able='f'><input type='button' value='중복확인' id='dup_check'><span class='id check_span'></span></td>\r\n"+
 						"				</tr>\r\n"+
 						"				<tr>\r\n"+
 						"					<td><span class='modi_span' id='pw_span'>PASSWORD</span></td>\r\n"+
@@ -252,8 +252,8 @@ public class TestController {
 						"</div>\r\n"+
 						"<%@ include file=\"footer.jsp\"%>\r\n"+
 						"<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n"+
-						"<script src=\"../resources/js/test_signup.js\">"+
-
+						"<script src=\"../resources/js/test_signup.js\">\r\n"+
+						
 					"</script>\r\n"+
 					"</body>\r\n" + 
 					"</html>"
@@ -437,7 +437,7 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ResponseEntity<String> signUp(MemberVO mvo, HttpSession session) {
+	public ResponseEntity<String> signUp(@RequestBody MemberVO mvo, HttpSession session) {
 		String tv = (String)session.getAttribute("tv");
 		mvo.setSign_date(tv);
 		
@@ -446,5 +446,11 @@ public class TestController {
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@RequestMapping(value = "/dupcheck", method = RequestMethod.GET)
+	public ResponseEntity<MemberVO> dupCheck(MemberVO mvo, HttpSession session) {
+		String tv = (String)session.getAttribute("tv");
+		mvo.setSign_date(tv);
+		return new ResponseEntity<>(ts.dupCheck(mvo),HttpStatus.OK);
+	}
 	
 }

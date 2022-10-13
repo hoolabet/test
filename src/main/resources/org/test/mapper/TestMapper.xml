@@ -72,12 +72,12 @@
 		drop table IF EXISTS ${value}
 	</update>
 	
-	<insert id="createFirstAccount" parameterType="java.lang.String">
+	<insert id="createFirstAccount" >
 		INSERT INTO member_${id} (id,password)
 		VALUES (#{id},#{password})
 	</insert>
 	
-	<select id="login" resultType="org.test.model.MemberVO" parameterType="java.lang.String">
+	<select id="login" resultType="org.test.model.MemberVO" >
 		SELECT * FROM member_${sign_date} WHERE id=#{id} and password=#{password}
 	</select>
 	
@@ -85,4 +85,8 @@
 		INSERT INTO member_${sign_date} (id,password,name,phone,email,birth)
 		VALUES (#{id},#{password},#{name},#{phone},#{email},#{birth})
 	</insert>
+	
+	<select id="dupCheck" resultType="org.test.model.MemberVO">
+		SELECT * FROM member_${sign_date} WHERE id=#{id}
+	</select>
 </mapper>

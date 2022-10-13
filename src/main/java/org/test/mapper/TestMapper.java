@@ -41,4 +41,6 @@ public interface TestMapper {
 
 	public int signUp(MemberVO mvo);
 
+	public MemberVO dupCheck(MemberVO mvo);
+
 }

@@ -2,7 +2,6 @@
 
 #entry{
 	height: 600px;
-	position: relative;
 	display: flex;
 	justify-content:space-around;
 	align-items: center;
