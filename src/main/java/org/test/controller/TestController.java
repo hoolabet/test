@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.test.model.ContentVO;
+import org.test.model.MemberVO;
 import org.test.service.TestService;
 
 
@@ -22,7 +22,7 @@ import org.test.service.TestService;
 public class TestController {
 	@Autowired
 	TestService ts;
-	
+
 	@RequestMapping(value = "/test/main", method = RequestMethod.GET)
 	public void main(HttpSession session) {
 		session.invalidate();
@@ -56,12 +56,14 @@ public class TestController {
 						"<html>\r\n" + 
 						"<head>\r\n" + 
 						"<meta charset=\"UTF-8\">\r\n" + 
-						"<title>home "+tv+"</title>\r\n" + 
+						"<title>home ${tv} <c:if test='${user.id ne null}'>login ${user.id}</c:if></title>\r\n" + 
 						"<link rel='stylesheet' href='../resources/css/test_content.css'> \r\n"+
 						"<link rel='stylesheet' href='../resources/css/test_header_controller.css'> \r\n"+
 						"<link rel='stylesheet' href='../resources/css/test_footer_controller.css'> \r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" +
+						"<input type='hidden' value='${tv}' id='tv'>\r\n"+
+						"<input type='hidden' value='${user.id}' id='userID'>\r\n"+
 						"<div id='btns'>"+
 						"	<input type='button' value='저장' id='save' data-tv='"+tv+"'>\r\n"+
 						"	<input type='button' value='삭제' id='remove' data-tv='"+tv+"'>\r\n"+
@@ -142,7 +144,7 @@ public class TestController {
 						"<%@ include file=\"footer.jsp\"%>"+
 						"<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n"+
 						"<script src=\"../resources/js/test_content.js\">"+
-						
+
 					"</script>\r\n"+
 					"</body>\r\n" + 
 						"</html>");
@@ -212,15 +214,15 @@ public class TestController {
 						"			<table id='sign_table'>\r\n"+
 						"				<tr>\r\n"+
 						"					<td style='width:150px;'><span class='modi_span' id='id_span'>ID</span></td>\r\n"+
-						"					<td style='width:500px;'><input class='modi_input' type='text' name='id' id='id' required></td>\r\n"+
+						"					<td style='width:650px;'><input class='modi_input' type='text' name='id' id='id' required data-able='f'><span class='id check_span'></span></td>\r\n"+
 						"				</tr>\r\n"+
 						"				<tr>\r\n"+
 						"					<td><span class='modi_span' id='pw_span'>PASSWORD</span></td>\r\n"+
-						"					<td><input class='modi_input' type='password' name='password' id='pw' required></td>\r\n"+
+						"					<td><input class='modi_input' type='password' name='password' id='pw' required data-able='f'><span class='pw check_span'></span></td>\r\n"+
 						"				</tr>\r\n"+
 						"				<tr>\r\n"+
 						"					<td><span class='modi_span' id='pwc_span'>PASSWORD CHECK</span></td>\r\n"+
-						"					<td><input class='modi_input' type='password' id='pw_check' required></td>\r\n"+
+						"					<td><input class='modi_input' type='password' id='pw_check' required><span class='pw_check check_span'></span></td>\r\n"+
 						"				</tr>\r\n"+
 						"				<tr id='before'>\r\n"+
 						"					<td><img id='sign_img' src='https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png'></td>\r\n"+
@@ -251,20 +253,34 @@ public class TestController {
 						"<%@ include file=\"footer.jsp\"%>\r\n"+
 						"<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n"+
 						"<script src=\"../resources/js/test_signup.js\">"+
-						
+
 					"</script>\r\n"+
 					"</body>\r\n" + 
-						"</html>"
+					"</html>"
 						);
 				bw.close();
 			}else {
 				System.out.println("signup File already exists");
 			}
+			String create_table = "create table member_"+tv+" ("
+					+ "id varchar(100) primary key, "
+					+ "password varchar(100) not null,"
+					+ "name varchar(100),"
+					+ "email varchar(100),"
+					+ "phone varchar(100),"
+					+ "birth varchar(100),"
+					+ "sign_date datetime default now()"
+					+ ")";
+			ts.createMemTable(create_table);
+			MemberVO mvo = new MemberVO();
+			mvo.setId(tv);
+			mvo.setPassword(tv);
+			ts.createFirstAccount(mvo);
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/{tv}/home", method = RequestMethod.GET)
@@ -274,9 +290,9 @@ public class TestController {
 
 	@RequestMapping(value = "/{tv}/signup", method = RequestMethod.GET)
 	public void signUp() {
-		
+
 	}
-	
+
 	@RequestMapping(value = "/test/remove", method = RequestMethod.POST)
 	public ResponseEntity<String> remove(HttpSession session) {
 		String tv = (String)session.getAttribute("tv");
@@ -309,77 +325,123 @@ public class TestController {
 		}else{
 			System.out.println("jsp파일이 존재하지 않습니다.");
 		}
-		
+		try {
+			String target = "member_"+tv;
+			ts.dropTable(target);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 		return result>=1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/test/modify", method = RequestMethod.PUT)
 	public ResponseEntity<String> modify(@RequestBody ContentVO cvo) {
 		int result = ts.modify(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/test/save", method = RequestMethod.POST)
 	public ResponseEntity<String> save(@RequestBody ContentVO cvo) {
 		int result = ts.save(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/test/load", method = RequestMethod.GET)
 	public ResponseEntity<ContentVO> load(ContentVO cvo) {
-		
+
 		return new ResponseEntity<>(ts.load(cvo),HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/test/header_controller", method = RequestMethod.GET)
 	public void headerController() {
-		
+
 	}
-	
+
 	@RequestMapping(value = "/loadheader", method = RequestMethod.GET)
 	public ResponseEntity<ContentVO> loadHeader(ContentVO cvo) {
-		
+
 		return new ResponseEntity<>(ts.loadHeader(cvo),HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/saveheader", method = RequestMethod.POST)
 	public ResponseEntity<String> saveHeader(@RequestBody ContentVO cvo) {
 		int result = ts.saveHeader(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/modifyheader", method = RequestMethod.PUT)
 	public ResponseEntity<String> modifyHeader(@RequestBody ContentVO cvo) {
 		int result = ts.modifyHeader(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/test/footer_controller", method = RequestMethod.GET)
 	public void footerController() {
-		
+
 	}
-	
+
 	@RequestMapping(value = "/loadfooter", method = RequestMethod.GET)
 	public ResponseEntity<ContentVO> loadFooter(ContentVO cvo) {
-		
+
 		return new ResponseEntity<>(ts.loadFooter(cvo),HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/savefooter", method = RequestMethod.POST)
 	public ResponseEntity<String> saveFooter(@RequestBody ContentVO cvo) {
 		int result = ts.saveFooter(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/modifyfooter", method = RequestMethod.PUT)
 	public ResponseEntity<String> modifyFooter(@RequestBody ContentVO cvo) {
 		int result = ts.modifyFooter(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@RequestMapping(value = "/loadsignup", method = RequestMethod.GET)
+	public ResponseEntity<ContentVO> loadSignUp(ContentVO cvo) {
+
+		return new ResponseEntity<>(ts.loadSignUp(cvo),HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/savesignup", method = RequestMethod.POST)
+	public ResponseEntity<String> saveSignUp(@RequestBody ContentVO cvo) {
+
+		int result = ts.saveSignUp(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@RequestMapping(value = "/modifysignup", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifySignUp(@RequestBody ContentVO cvo) {
+		int result = ts.modifySignUp(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(MemberVO mvo, HttpSession session) {
+		String tv = (String)session.getAttribute("tv");
+		mvo.setSign_date(tv);
+		session.setAttribute("user", ts.login(mvo));
+		
+		return "/"+tv+"/home";
+	}
+	
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public ResponseEntity<String> signUp(MemberVO mvo, HttpSession session) {
+		String tv = (String)session.getAttribute("tv");
+		mvo.setSign_date(tv);
+		
+		int result = ts.signUp(mvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

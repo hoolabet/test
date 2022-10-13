@@ -5,15 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>sign up hh</title>
+<title>sign up abcde</title>
 <link rel='stylesheet' href='../resources/css/test_signup.css'> 
 <link rel='stylesheet' href='../resources/css/test_header_controller.css'> 
 <link rel='stylesheet' href='../resources/css/test_footer_controller.css'> 
 </head>
 <body>
-<div id='btns'>	<input type='button' value='저장' id='save' data-tv='hh'>
-	<input type='button' value='삭제' id='remove' data-tv='hh'>
-	<input type='button' value='불러오기' id='load' data-tv='hh'>
+<div id='btns'>	<input type='button' value='저장' id='save' data-tv='abcde'>
+	<input type='button' value='삭제' id='remove' data-tv='abcde'>
+	<input type='button' value='불러오기' id='load' data-tv='abcde'>
 </div>
 <%@ include file="header.jsp"%>
 <div id='entry'>
@@ -22,15 +22,15 @@
 			<table id='sign_table'>
 				<tr>
 					<td style='width:150px;'><span class='modi_span' id='id_span'>ID</span></td>
-					<td style='width:500px;'><input class='modi_input' type='text' name='id' id='id' required></td>
+					<td style='width:650px;'><input class='modi_input' type='text' name='id' id='id' required data-able='f'><span class='id check_span'></span></td>
 				</tr>
 				<tr>
 					<td><span class='modi_span' id='pw_span'>PASSWORD</span></td>
-					<td><input class='modi_input' type='password' name='password' id='pw' required></td>
+					<td><input class='modi_input' type='password' name='password' id='pw' required data-able='f'><span class='pw check_span'></span></td>
 				</tr>
 				<tr>
 					<td><span class='modi_span' id='pwc_span'>PASSWORD CHECK</span></td>
-					<td><input class='modi_input' type='password' id='pw_check' required></td>
+					<td><input class='modi_input' type='password' id='pw_check' required><span class='pw_check check_span'></span></td>
 				</tr>
 				<tr id='before'>
 					<td><img id='sign_img' src='https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png'></td>

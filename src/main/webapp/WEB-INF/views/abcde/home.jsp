@@ -5,15 +5,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>home a</title>
+<title>home ${tv} <c:if test='${user.id ne null}'>login ${user.id}</c:if></title>
 <link rel='stylesheet' href='../resources/css/test_content.css'> 
 <link rel='stylesheet' href='../resources/css/test_header_controller.css'> 
 <link rel='stylesheet' href='../resources/css/test_footer_controller.css'> 
 </head>
 <body>
-<div id='btns'>	<input type='button' value='저장' id='save' data-tv='a'>
-	<input type='button' value='삭제' id='remove' data-tv='a'>
-	<input type='button' value='불러오기' id='load' data-tv='a'>
+<input type='hidden' value='${tv}' id='tv'>
+<input type='hidden' value='${user.id}' id='userID'>
+<div id='btns'>	<input type='button' value='저장' id='save' data-tv='abcde'>
+	<input type='button' value='삭제' id='remove' data-tv='abcde'>
+	<input type='button' value='불러오기' id='load' data-tv='abcde'>
 </div>
 <%@ include file="header.jsp"%>	<div id="side_list">
         <div id="side_btn">

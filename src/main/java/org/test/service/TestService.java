@@ -1,6 +1,7 @@
 package org.test.service;
 
 import org.test.model.ContentVO;
+import org.test.model.MemberVO;
 
 public interface TestService {
 	public int save(ContentVO cvo);
@@ -22,4 +23,20 @@ public interface TestService {
 	public int saveFooter(ContentVO cvo);
 
 	public int modifyFooter(ContentVO cvo);
+
+	public ContentVO loadSignUp(ContentVO cvo);
+
+	public int saveSignUp(ContentVO cvo);
+
+	public int modifySignUp(ContentVO cvo);
+
+	public void createMemTable(String create_table);
+
+	public void dropTable(String tv);
+
+	public void createFirstAccount(MemberVO mvo);
+
+	public MemberVO login(MemberVO mvo);
+
+	public int signUp(MemberVO mvo);
 }

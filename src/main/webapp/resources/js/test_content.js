@@ -1,4 +1,8 @@
-const tv = $("#save").data("tv");
+const tv = $("#tv").val();
+const userID = $("#userID").val();
+
+console.log(tv);
+console.log(userID);
 
 $.getJSON("/loadheader",{url:tv},function(res){
 	$("#header").html(res.content);
@@ -185,7 +189,7 @@ $("#add_login").on("click", function(){
 	const login = `
 		<div id="div_login_login" class="div_login" data-target="login">
 		<div class="move_divs_handler" id="div_login_handler_login">✔</div>
-		<form id="form_login">
+		<form id="form_login" action="/login" method="post">
 		<input type="hidden" value="${tv}" name="tv">
 		<table id="table_login">
 		<tr>
@@ -579,7 +583,8 @@ function loadFunc(){
 			const login = `
 				<div id="div_login_login" class="div_login" data-target="login">
 				<div class="move_divs_handler" id="div_login_handler_login">✔</div>
-				<form id="form_login">
+				<form id="form_login" action="/login" method="post">
+				<input type="hidden" value="${tv}" name="tv">
 				<table id="table_login">
 				<tr>
 				<td><span class="editable_login">아이디</span></td>
@@ -591,8 +596,8 @@ function loadFunc(){
 				</tr>
 				<tr>
 				<td colspan="2">
-				<input type="submit" value="로그인">
-				<input type="submit" value="회원가입">
+				<input type="submit" value="로그인" id="log_in">
+				<input type="submit" value="회원가입" id="sign_up">
 				</td>
 				</tr>
 				</table>
@@ -600,6 +605,10 @@ function loadFunc(){
 				</div>
 				`;
 			$("#move_div_area").append(login);
+			$("#sign_up").on("click", function(e) {
+				e.preventDefault();
+				window.open(`/${tv}/signup`);
+			})
 			dragElement($("#div_login_login")[0]);
 		})
 		

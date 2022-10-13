@@ -11,10 +11,17 @@
 #remove{ 
     position: absolute;
     right:50px;
+    z-index:999;
 }
 #save{
     position: absolute;
     right:100px;
+    z-index:999;
+}
+#load{
+	position: absolute;
+    right:150px;
+    z-index:999;
 }
 
 #sign_div {

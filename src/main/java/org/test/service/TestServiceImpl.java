@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.test.mapper.TestMapper;
 import org.test.model.ContentVO;
+import org.test.model.MemberVO;
 
 @Service
 public class TestServiceImpl implements TestService{
@@ -48,5 +49,37 @@ public class TestServiceImpl implements TestService{
 
 	public int modifyFooter(ContentVO cvo){
 		return tm.modifyFooter(cvo);
+	}
+	
+	public ContentVO loadSignUp(ContentVO cvo) {
+		return tm.loadSignUp(cvo);
+	}
+
+	public int saveSignUp(ContentVO cvo){
+		return tm.saveSignUp(cvo);
+	}
+
+	public int modifySignUp(ContentVO cvo){
+		return tm.modifySignUp(cvo);
+	}
+	
+	public void createMemTable(String create_table) {
+		tm.createMemTable(create_table);
+	}
+	
+	public void dropTable(String tv) {
+		tm.dropTable(tv);
+	}
+	
+	public void createFirstAccount(MemberVO mvo) {
+		tm.createFirstAccount(mvo);
+	}
+	
+	public MemberVO login(MemberVO mvo) {
+		return tm.login(mvo);
+	}
+	
+	public int signUp(MemberVO mvo) {
+		return tm.signUp(mvo);
 	}
 }

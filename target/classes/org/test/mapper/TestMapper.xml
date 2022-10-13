@@ -49,4 +49,40 @@
 		SET content=#{content}
 		WHERE url=#{url}
 	</update>
+	
+	<select id="loadSignUp" resultType="org.test.model.ContentVO">
+		SELECT * FROM signup WHERE url=#{url}
+	</select>
+	
+	<insert id="saveSignUp">
+		INSERT INTO signup(url,content)
+		VALUES(#{url},#{content})
+	</insert>
+	<update id="modifySignUp">
+		UPDATE signup 
+		SET content=#{content}
+		WHERE url=#{url}
+	</update>
+	
+	<update id="createMemTable" parameterType="java.lang.String">
+		${value}
+	</update>
+	
+	<update id="dropTable" parameterType="java.lang.String">
+		drop table IF EXISTS ${value}
+	</update>
+	
+	<insert id="createFirstAccount" parameterType="java.lang.String">
+		INSERT INTO member_${id} (id,password)
+		VALUES (#{id},#{password})
+	</insert>
+	
+	<select id="login" resultType="org.test.model.MemberVO" parameterType="java.lang.String">
+		SELECT * FROM member_${sign_date} WHERE id=#{id} and password=#{password}
+	</select>
+	
+	<insert id="signUp" >
+		INSERT INTO member_${sign_date} (id,password,name,phone,email,birth)
+		VALUES (#{id},#{password},#{name},#{phone},#{email},#{birth})
+	</insert>
 </mapper>
