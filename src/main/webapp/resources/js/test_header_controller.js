@@ -132,43 +132,41 @@ $(document).on("contextmenu",function(e){
 	if(e.target.className =="header" 
 		|| e.target.className == "list_div" 
 			|| e.target.className == "list_li" 
-				|| e.target.id == "entry"
-					|| e.target.className == "div_home"
-
+				|| e.target.className == "div_home"
 	){
 		$("#right_a").css("display","none");
+		$("#right_entry").css("display","none");
 		$("#right_container").css("top",e.pageY).css("left",e.pageX).css("display","flex");
 		$(".font_color").css("top","0px").css("left","100px");
 		$(".background_color").css("top","32px").css("left","100px");
 		$(".blank").css("top","128px").css("left","100px");
 		$(".loc").css("top","160px").css("left","100px");
-		if(e.target.id == "entry"){
-			$("#right_container").data("target","entry");
-			$("#font_color").css("display","none");
-			$("#size").css("display","none");
-			$("#font_size").css("display","none");
-			$(".background_color").css("top","0px");
-			$(".blank").css("top","32px");
-		}else{
-			$("#right_container").data("class",e.target.className);
-			$("#right_container").data("target",$(e.target).data("target"));
-			$("#font_color").css("display","flex");
-			$("#size").css("display","flex");
-			$("#font_size").css("display","flex");
-		}
+		$("#right_container").data("class",e.target.className);
+		$("#right_container").data("target",$(e.target).data("target"));
+		$("#font_color").css("display","flex");
+		$("#size").css("display","flex");
+		$("#font_size").css("display","flex");
 	}else if(e.target.className == "list_li_a"){
 		$("#right_container").css("display","none");
+		$("#right_entry").css("display","none");
 		$("#right_container").data("class",e.target.className);
 		$("#right_container").data("target",$(e.target).data("target"));
 		$("#right_a").css("top",e.pageY).css("left",e.pageX).css("display","flex");
 		$(".font_color").css("top","0px").css("left","100px");
+	}else if(e.target.id == "entry"){
+		$("#right_entry").css("top",e.pageY).css("left",e.pageX).css("display","flex");
+		$("#right_a").css("display","none");
+		$("#right_container").css("display","none");
 	}
 
 })
 
-$(document).on("click", function() {
+$(document).on("click", function(e) {
+	console.log("X : "+e.pageX);
+	console.log("Y : "+e.pageY);
 	$("#right_container").css("display","none");
 	$("#right_a").css("display","none");
+	$("#right_entry").css("display","none");
 })
 
 $(".font_color").children().each(function(i,c) {
@@ -304,7 +302,7 @@ $(".blanks").on("click", function(){
 })
 
 $("#add_home").on("click", function() {
-	$(this).toggle();
+	$("#div_home_home").remove();
 	const home = `
 		<div id="div_home_home" class="div_home" data-target="home">
 		<div class="move_divs_handler" id="div_home_handler_home">✔</div>
@@ -335,9 +333,6 @@ $("#delete_target").on("click", function() {
 		alert("이 영역은 삭제할 수 없습니다.");
 	}else{
 		$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).remove();
-		if(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}` == "#div_home_home"){
-			$("#add_home").toggle();
-		}
 	}
 })
 
@@ -345,14 +340,24 @@ $(".locs").on("click", function() {
 	const id = `${$("#right_container").data("class")}_${$("#right_container").data("target")}`;
 	const locs = $(this).data("locs");
 	if(locs == "move"){
-		const top = prompt("x 좌표",$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("top").replace("px",""));
-		const left = prompt("y 좌표",$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("left").replace("px",""));
-		if(isNaN(top) || isNaN(left) || top <= 0 || left <= 0){
-			alert("0보다 큰 숫자만 입력하세요");
+		const left = prompt("x 좌표",$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("left").replace("px",""));
+		const top = prompt("y 좌표",$(`#${$("#right_container").data("class")}_${$("#right_container").data("target")}`).css("top").replace("px",""));
+		if(isNaN(top) || isNaN(left) || top < 0 || left < 0){
+			alert("0 이상의 숫자만 입력하세요");
 			return false;
 		}
-		$(`#${id}`).css("top",top+"px");
-		$(`#${id}`).css("left",left+"px");
+		if(id == "header_1"){
+			$(`#header`).css("top",top+"px");
+			$(`#header`).css("left",left+"px");
+		}else{
+			if($("#header").css("position") == "sticky"){
+				$(`#${id}`).css("top",(top - $("body").css("margin-top").replace("px",""))+"px");
+				$(`#${id}`).css("left",(left - $("body").css("margin-left").replace("px",""))+"px");
+			}else{
+				$(`#${id}`).css("top",top+"px");
+				$(`#${id}`).css("left",left+"px");
+			}
+		}
 	}else if(locs == "fix"){
 		$(`#${$("#right_container").data("class")}_handler_${$("#right_container").data("target")}`).toggle();
 	}else if(locs == "center"){
@@ -360,7 +365,30 @@ $(".locs").on("click", function() {
 			alert("가운데 정렬을 할 수 없습니다.")
 		}else{
 			const leftVal = 960 - $(`#${id}`).css("width").replace("px","")/2;
-			$(`#${id}`).css("left",leftVal);
+			if($("#header").css("position") == "sticky"){
+				$(`#${id}`).css("left",leftVal- $("#header").css("left").replace("px","") - $("body").css("margin-left").replace("px","")+"px");
+			}else{
+				$(`#${id}`).css("left",leftVal+"px");
+			}
 		}
 	}
+})
+
+$(".right_entry").on("click", function() {
+	const top = prompt("고정할 위치의 y 좌표 값을 설정하세요.");
+	const left = prompt("고정할 위치의 x 좌표 값을 설정하세요.");
+	if(isNaN(top) || isNaN(left) || top < 0 || left < 0){
+		alert("0 이상의 숫자만 입력하세요");
+		return false;
+	}
+	$("#header").css("position",$(this).prop("id")).css("top",top+"px").css("left",left+"px");
+	$("#position").remove();
+	const position = `
+		<input type="hidden" id="position" 
+			data-position="${$(this).prop("id")}"
+			data-top="${top}px"
+			data-left="${left}px"
+		>
+	`;
+	$("#header").append(position);
 })

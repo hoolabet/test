@@ -43,4 +43,6 @@ public interface TestMapper {
 
 	public MemberVO dupCheck(MemberVO mvo);
 
+	public MemberVO logOut(MemberVO mvo);
+
 }

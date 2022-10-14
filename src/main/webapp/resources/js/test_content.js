@@ -4,20 +4,28 @@ const userID = $("#userID").val();
 console.log(tv);
 console.log(userID);
 
+loadFunc();
 $.getJSON("/loadheader",{url:tv},function(res){
 	$("#header").html(res.content);
 	$("#header").css("background-color", "inherit");
 	$.getJSON("/loadfooter",{url:tv},function(res){
 		$("#footer").html(res.content);
-		const top = $("#margin_top").data("margin");
-		const right = $("#margin_right").data("margin");
-		const bottom = $("#margin_bottom").data("margin");
-		const left = $("#margin_left").data("margin");
-		$("body").css("margin-top",`${top}px`);
-		$("body").css("margin-right",`${right}px`);
-		$("body").css("margin-bottom",`${bottom}px`);
-		$("body").css("margin-left",`${left}px`);
 	})
+})
+.done(function() {
+	const top = $("#margin_top").data("margin");
+	const right = $("#margin_right").data("margin");
+	const bottom = $("#margin_bottom").data("margin");
+	const left = $("#margin_left").data("margin");
+	$("body").css("margin-top",`${top}px`);
+	$("body").css("margin-right",`${right}px`);
+	$("body").css("margin-bottom",`${bottom}px`);
+	$("body").css("margin-left",`${left}px`);
+	
+	const position = $("#position").data("position");
+	const pTop = $("#position").data("top");
+	const pLeft = $("#position").data("left");
+	$("#header").css("position",position).css("top",pTop).css("left",pLeft);
 })
 
 
@@ -184,14 +192,31 @@ $("#body_controller").on("click", function(e){
 	$("#body_menu").toggle();
 })
 
+function logOut() {
+	$.getJSON("/logout",{id:$("#userID").val()},function(){
+		$("input[name='id']").val("");
+		$("input[name='password']").val("");
+		$("#table_login").css("display","flex");
+		$("#table_after_login").css("display","none");
+	})
+}
+
+function logIn(){
+	$.getJSON("/login",{id:$("input[name='id']").val(),password:$("input[name='password']").val()},function(res){
+		$("#userID").val(res.id);
+		$("#userID_span").html(res.id);
+		$("#table_login").css("display","none");
+		$("#table_after_login").css("display","flex");
+	})
+}
+
 $("#add_login").on("click", function(){
 	$(this).toggle();
 	const login = `
 		<div id="div_login_login" class="div_login" data-target="login">
 		<div class="move_divs_handler" id="div_login_handler_login">✔</div>
-		<form id="form_login" action="/login" method="post">
 		<input type="hidden" value="${tv}" name="tv">
-		<table id="table_login">
+		<table id="table_login" class="table_login">
 		<tr>
 		<td><span class="editable_login">아이디</span></td>
 		<td><input type="text" name="id" placeholder="id"></td>
@@ -202,18 +227,31 @@ $("#add_login").on("click", function(){
 		</tr>
 		<tr>
 		<td colspan="2">
-		<input type="submit" value="로그인" id="log_in">
-		<input type="submit" value="회원가입" id="sign_up">
+		<input type="button" value="로그인" id="log_in">
+		<input type="button" value="회원가입" id="sign_up">
 		</td>
 		</tr>
 		</table>
-		</form>
+		<table id="table_after_login" class="table_login">
+		<tr>
+		<td><span id="userID_span"></span></td>
+		</tr>
+		<tr>
+		<td><input type="button" value="로그아웃" id="log_out"></td>
+		</tr>
+		</table>
 		</div>
 		`;
 	$("#move_div_area").append(login);
 	$("#sign_up").on("click", function(e) {
 		e.preventDefault();
-		window.open(`/${tv}/signup`);
+		location.href = `/${tv}/signup`;
+	})
+	$("#log_in").on("click", function() {
+		logIn();
+	})
+	$("#log_out").on("click", function() {
+		logOut();
 	})
 	dragElement($("#div_login_login")[0]);
 })
@@ -277,7 +315,7 @@ $("#footer_controller").on("click",function(){
 $('#remove').on('click',function(){
 	const tv = $(this).data("tv");
 	if(prompt(`삭제하시겠습니까?
-		삭제 하시려면 "삭제한다/${tv}" 를 입력하세요.`) == "삭제한다/"+tv){
+	삭제 하시려면 "삭제한다/${tv}" 를 입력하세요.`) == "삭제한다/"+tv){
 		$.ajax({
 			type:'post',
 			url:'/test/remove',
@@ -342,7 +380,10 @@ function loadFunc(){
 	$.getJSON("/test/load",{url:tv},function(res){
 		$("body").html(res.content);
 		alert("불러오기 성공");
-
+		if(userID != ""){
+			$("#table_login").css("display","none");
+			$("#table_after_login").css("display","flex");
+		}
 		$(".move_divs").on("dblclick", function(){
 			const editable = `
 				<div contenteditable="true" class="editable" id="editable_${cnt}" data-target="${cnt}"></div>
@@ -362,7 +403,8 @@ function loadFunc(){
 
 		$('#remove').on('click',function(){
 			const tv = $(this).data("tv");
-			if(confirm('삭제하시겠습니까?')){
+			if(prompt(`삭제하시겠습니까?
+			삭제 하시려면 "삭제한다/${tv}" 를 입력하세요.`) == "삭제한다/"+tv){
 				$.ajax({
 					type:'post',
 					url:'/test/remove',
@@ -580,16 +622,21 @@ function loadFunc(){
 		})
 		$("#sign_up").on("click", function(e) {
 			e.preventDefault();
-			window.open(`/${tv}/signup`);
+			location.href = `/${tv}/signup`;
+		})
+		$("#log_in").on("click", function() {
+			logIn();
+		})
+		$("#log_out").on("click", function() {
+			logOut();
 		})
 		$("#add_login").off("click").on("click", function(){
 			$(this).toggle();
 			const login = `
 				<div id="div_login_login" class="div_login" data-target="login">
 				<div class="move_divs_handler" id="div_login_handler_login">✔</div>
-				<form id="form_login" action="/login" method="post">
 				<input type="hidden" value="${tv}" name="tv">
-				<table id="table_login">
+				<table id="table_login" class="table_login">
 				<tr>
 				<td><span class="editable_login">아이디</span></td>
 				<td><input type="text" name="id" placeholder="id"></td>
@@ -600,18 +647,31 @@ function loadFunc(){
 				</tr>
 				<tr>
 				<td colspan="2">
-				<input type="submit" value="로그인" id="log_in">
-				<input type="submit" value="회원가입" id="sign_up">
+				<input type="button" value="로그인" id="log_in">
+				<input type="button" value="회원가입" id="sign_up">
 				</td>
 				</tr>
 				</table>
-				</form>
+				<table id="table_after_login" class="table_login">
+				<tr>
+				<td><span id="userID_span"></span></td>
+				</tr>
+				<tr>
+				<td><input type="button" value="로그아웃" id="log_out"></td>
+				</tr>
+				</table>
 				</div>
 				`;
 			$("#move_div_area").append(login);
 			$("#sign_up").off("click").on("click", function(e) {
 				e.preventDefault();
-				window.open(`/${tv}/signup`);
+				location.href = `/${tv}/signup`;
+			})
+			$("#log_in").on("click", function() {
+				logIn();
+			})
+			$("#log_out").on("click", function() {
+				logOut();
 			})
 			dragElement($("#div_login_login")[0]);
 		})

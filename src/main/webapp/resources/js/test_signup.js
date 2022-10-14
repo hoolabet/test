@@ -8,16 +8,25 @@ $.getJSON("/loadheader",{url:tv},function(res){
 	$("#header").css("background-color", "inherit");
 	$.getJSON("/loadfooter",{url:tv},function(res){
 		$("#footer").html(res.content);
-		const top = $("#margin_top").data("margin");
-		const right = $("#margin_right").data("margin");
-		const bottom = $("#margin_bottom").data("margin");
-		const left = $("#margin_left").data("margin");
-		$("body").css("margin-top",`${top}px`);
-		$("body").css("margin-right",`${right}px`);
-		$("body").css("margin-bottom",`${bottom}px`);
-		$("body").css("margin-left",`${left}px`);
+		
 	})
 })
+.done(function() {
+	const top = $("#margin_top").data("margin");
+	const right = $("#margin_right").data("margin");
+	const bottom = $("#margin_bottom").data("margin");
+	const left = $("#margin_left").data("margin");
+	$("body").css("margin-top",`${top}px`);
+	$("body").css("margin-right",`${right}px`);
+	$("body").css("margin-bottom",`${bottom}px`);
+	$("body").css("margin-left",`${left}px`);
+	
+	const position = $("#position").data("position");
+	const pTop = $("#position").data("top");
+	const pLeft = $("#position").data("left");
+	$("#header").css("position",position).css("top",pTop).css("left",pLeft);
+})
+
 
 $(document).on("contextmenu",function(e){
 	e.preventDefault();

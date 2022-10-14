@@ -63,7 +63,7 @@ public class TestController {
 						"</head>\r\n" + 
 						"<body>\r\n" +
 						"<input type='hidden' value='${tv}' id='tv'>\r\n"+
-						"<input type='hidden' value='${user.id}' id='userID'>\r\n"+
+						"<input type='hidden' id='userID'>\r\n"+
 						"<div id='btns'>"+
 						"	<input type='button' value='저장' id='save' data-tv='"+tv+"'>\r\n"+
 						"	<input type='button' value='삭제' id='remove' data-tv='"+tv+"'>\r\n"+
@@ -197,9 +197,9 @@ public class TestController {
 						"<head>\r\n" + 
 						"<meta charset=\"UTF-8\">\r\n" + 
 						"<title>sign up "+tv+"</title>\r\n" + 
-						"<link rel='stylesheet' href='../resources/css/test_signup.css'> \r\n"+
 						"<link rel='stylesheet' href='../resources/css/test_header_controller.css'> \r\n"+
 						"<link rel='stylesheet' href='../resources/css/test_footer_controller.css'> \r\n"+
+						"<link rel='stylesheet' href='../resources/css/test_signup.css'> \r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" +
 						"<div id='btns'>"+
@@ -427,13 +427,21 @@ public class TestController {
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(MemberVO mvo, HttpSession session) {
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
 		String tv = (String)session.getAttribute("tv");
 		mvo.setSign_date(tv);
 		session.setAttribute("user", ts.login(mvo));
-		
-		return "/"+tv+"/home";
+		return new ResponseEntity<>(ts.login(mvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public ResponseEntity<MemberVO> logOut(MemberVO mvo, HttpSession session) {
+		MemberVO m = new MemberVO();
+		session.setAttribute("user", m);
+		String tv = (String)session.getAttribute("tv");
+		mvo.setSign_date(tv);
+		return new ResponseEntity<>(ts.logOut(mvo),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)

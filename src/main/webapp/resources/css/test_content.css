@@ -1,21 +1,10 @@
 @charset "UTF-8";
 
-/* #header {
-	width: 100%;
-	height: 150px;
-	background-color: #e3e3e3;
-	position:absolute;
-	top:0;
-	z-index: -99;
-} */
+#header {
+	z-index: 10;
+}
 
 /* #footer{
-	width: 100%;
-	height: 150px;
-	background-color: #e3e3e3;
-	position:absolute;
-	bottom:0;
-	z-index: -99;
 } */
 
 #side_btn img {
@@ -70,7 +59,7 @@
     overflow: auto;
     position: absolute;
     left: 500px;
-    top: 200px;
+    top: 0px;
     text-align: center;
     background-color: white;
 }
@@ -126,14 +115,17 @@
 #remove{ 
     position: absolute;
     right:50px;
+    z-index:999;
 }
 #save{
     position: absolute;
     right:100px;
+    z-index:999;
 }
 #load{
 	position: absolute;
     right:150px;
+    z-index:999;
 }
 
 #move_div_area{
@@ -233,7 +225,7 @@
     overflow: auto;
     position: absolute;
     left: 500px;
-    top: 200px;
+    top: 0px;
     text-align: center;
     background-color: white;
     display:flex;
@@ -268,6 +260,10 @@
 
 #table_login td{
     border: 1px solid black;
+}
+
+#table_after_login{
+	display:none;
 }
 
 #container_controller {

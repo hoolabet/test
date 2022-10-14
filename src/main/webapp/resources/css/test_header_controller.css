@@ -1,15 +1,24 @@
 @charset "UTF-8";
 
+#entry{
+	height: 2000px;
+}
 
+#header {
+	height: auto;
+	width: 100%;
+} 
 
 #save {
 	position: absolute;
 	right: 100px;
+	z-index:999;
 }
 
 #load {
 	position: absolute;
 	right: 150px;
+	z-index:999;
 }
 
 .move_divs_handler {
@@ -227,5 +236,26 @@
 }
 
 .blanks:hover, .locs:hover{
+	background-color: #52afe8;
+}
+
+#right_entry{
+	position: absolute;
+	width: 100px;
+	display: none;
+	background-color: #ebebeb;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.right_entry{
+	margin: 0;
+	width: 100px;
+	height: 30px;
+	border: 1px solid black;
+}
+
+.right_entry:hover {
 	background-color: #52afe8;
 }

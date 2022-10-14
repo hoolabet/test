@@ -104,6 +104,11 @@
 			</div>
 			<div id="a_change">내용변경</div>
 		</div>
+		<div id="right_entry">
+			<div id="fixed" class="right_entry">fixed</div>
+			<div id="sticky" class="right_entry">sticky</div>
+			<div id="static" class="right_entry">static</div>
+		</div>
 	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

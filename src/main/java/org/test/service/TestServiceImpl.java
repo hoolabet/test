@@ -86,4 +86,8 @@ public class TestServiceImpl implements TestService{
 	public MemberVO dupCheck(MemberVO mvo) {
 		return tm.dupCheck(mvo);
 	}
+	
+	public MemberVO logOut(MemberVO mvo) {
+		return tm.logOut(mvo);
+	}
 }

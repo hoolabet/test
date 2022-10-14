@@ -41,4 +41,6 @@ public interface TestService {
 	public int signUp(MemberVO mvo);
 
 	public MemberVO dupCheck(MemberVO mvo);
+
+	public MemberVO logOut(MemberVO mvo);
 }

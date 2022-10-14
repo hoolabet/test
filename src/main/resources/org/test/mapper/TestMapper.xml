@@ -89,4 +89,8 @@
 	<select id="dupCheck" resultType="org.test.model.MemberVO">
 		SELECT * FROM member_${sign_date} WHERE id=#{id}
 	</select>
+	
+	<select id="logOut" resultType="org.test.model.MemberVO">
+		SELECT * FROM member_${sign_date} WHERE id=#{id}
+	</select>
 </mapper>
